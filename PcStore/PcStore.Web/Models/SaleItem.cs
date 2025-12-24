@@ -14,7 +14,7 @@ namespace PcStore.Web.Models
         // Количество товара этой позиции в продаже
         [Display(Name = "Количество")]
         [Required(ErrorMessage = "Введите количество")]
-        [Range(1, 10000, ErrorMessage = "Количество не может быть меньше 1")]
+        [Range(1, 10000, ErrorMessage = "Недопустимое количество")]
         public int Quantity { get; set; }
 
         // Цена товара на момент продажи
