@@ -41,9 +41,24 @@ namespace PcStore.Web.Data
 
             // Начальные данные в таблице Категрии
             modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Процессоры" },
-                new Category { Id = 2, Name = "Видеокарты" },
-                new Category { Id = 3, Name = "Мониторы" }
+                new Category
+                {
+                    Id = 1,
+                    Name = "Процессоры",
+                    Description = "Центральные процессоры (CPU) для ПК"
+                },
+                new Category
+                {
+                    Id = 2,
+                    Name = "Видеокарты",
+                    Description = "Графические процессоры (GPU) для ПК"
+                },
+                new Category
+                {
+                    Id = 3,
+                    Name = "Мониторы",
+                    Description = "Стандартные и игровые мониторы для ПК"
+                }
             );
 
             // Начальные данные в таблице Товары

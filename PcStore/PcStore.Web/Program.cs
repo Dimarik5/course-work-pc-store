@@ -1,7 +1,19 @@
+using Microsoft.EntityFrameworkCore;
+using PcStore.Web.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Подключение к MySQL
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySql(
+        connectionString,
+        new MySqlServerVersion(new Version(9, 2, 0))
+    ));
 
 var app = builder.Build();
 
