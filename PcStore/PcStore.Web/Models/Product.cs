@@ -42,13 +42,13 @@ namespace PcStore.Web.Models
         // --- СВЯЗИ ---
 
         // Внешний ключ на категорию
-        [Display(Name = "Категория")]
         public int CategoryId { get; set; }
+        [Display(Name = "Категория")]
         public virtual Category Category { get; set; }
 
         // Внешний ключ на поставщика
-        [Display(Name = "Поставщик")]
         public int SupplierId { get; set; }
+        [Display(Name = "Поставщик")]
         public virtual Supplier Supplier { get; set; }
     }
 }
