@@ -1,0 +1,90 @@
+﻿@model IEnumerable<PcStore.Web.Models.Product>
+@{
+    ViewData["Title"] = "Терминал продажи";
+    var cart = ViewBag.Cart as List<PcStore.Web.Models.CartItem>;
+    var cartTotal = (decimal)ViewBag.CartTotal;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Слева: каталог товаров -->
+        <div class="col-md-8">
+            <h3>Каталог товаров</h3>
+
+            <div class="row">
+                @foreach (var product in Model)
+                {
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">@product.Name</h5>
+                                <p class="card-text text-muted small">@product.Category?.Name | Остаток: @product.QuantityInStock</p>
+                                <h4 class="text-primary">@product.Price.ToString("C")</h4> <!-- "C" меняет формат отображения цены и валюту в зависимости от языка пользователя -->
+                                <!-- Форма добавления в "корзину" -->
+                                <form asp-action="AddToCart" method="post" class="mt-3">
+                                    <input type="hidden" name="productId" value="@product.Id" />
+                                    <div class="input-group">
+                                        <input type="number" name="quantity" class="form-control" value="1" min="1" max="@product.QuantityInStock" />
+                                        <button type="submit" class="btn btn-success">В чек +</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Справа: текущий чек -->
+        <div class="col-md-4">
+            <div class="card border-primary mb-3" style="position: sticky; top: 20px;">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Текущий чек</h4>
+                </div>
+                <div class="card-body">
+                    @if (cart != null && cart.Any())
+                    {
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Товар</th>
+                                    <th>Количество</th>
+                                    <th>Сумма</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in cart)
+                                {
+                                    <tr>
+                                        <td>@item.ProductName</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@item.Total.ToString("C")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        <hr />
+                        <h3 class="text-end">Итого: @cartTotal.ToString("C")</h3>
+
+                        <div class="d-grid gap-2 mt-3">
+                            <!-- Кнопка Оформить -->
+                            <form asp-action="Checkout" method="post">
+                                <button type="submit" class="btn btn-lg btn-primary w-100">Оформить продажу</button>
+                            </form>
+
+                            <!-- Кнопка Очистить -->
+                            <form asp-action="ClearCart" method="post">
+                                <button type="submit" class="btn btn-outline-danger w-100">Сбросить чек</button>
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-center text-muted my-3">Чек пуст. Добавьте товары слева.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
