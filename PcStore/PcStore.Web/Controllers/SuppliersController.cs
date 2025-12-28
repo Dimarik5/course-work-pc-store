@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PcStore.Web.Data;
 using PcStore.Web.Models;
 
 namespace PcStore.Web.Controllers
 {
+    [Authorize] // К контроллеру имеют доступ только авторизованные пользователи
     public class SuppliersController : Controller
     {
         private readonly AppDbContext _context;

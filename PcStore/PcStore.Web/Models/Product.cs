@@ -24,7 +24,7 @@ namespace PcStore.Web.Models
         // Описание товара
         [Display(Name = "Описание")]
         [DataType(DataType.MultilineText)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         // Цена товара
         [Display(Name = "Цена")]
@@ -42,13 +42,15 @@ namespace PcStore.Web.Models
         // --- СВЯЗИ ---
 
         // Внешний ключ на категорию
+        [Display(Name = "Категория")] // Название для формы создания
         public int CategoryId { get; set; }
-        [Display(Name = "Категория")]
-        public virtual Category Category { get; set; }
+        [Display(Name = "Категория")] // Название для таблицы списка товаров
+        public virtual Category? Category { get; set; }
 
         // Внешний ключ на поставщика
+        [Display(Name = "Поставщик")] // Название для формы создания
         public int SupplierId { get; set; }
-        [Display(Name = "Поставщик")]
-        public virtual Supplier Supplier { get; set; }
+        [Display(Name = "Поставщик")] // Название для таблицы списка товаров
+        public virtual Supplier? Supplier { get; set; }
     }
 }

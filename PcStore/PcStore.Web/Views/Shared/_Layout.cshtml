@@ -19,12 +19,42 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        <!-- Ссылка на Товары -->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Товары</a>
                         </li>
+                        <!-- Ссылка на Категории -->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Категории</a>
                         </li>
+                        <!-- Ссылка на Поставщиков -->
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Suppliers" asp-action="Index">Поставщики</a>
+                        </li>
+                    </ul>
+                    <!-- Меню с пользователем -->
+                    <ul class="navbar-nav ms-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link text-dark">
+                                    <!-- Приветствие с ФИО из Claims, заполненного при входе -->
+                                    Здравствуйте, <b>@User.FindFirst("FullName")?.Value</b> (@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value)
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <!-- Кнопка выхода -->
+                                <form class="form-inline" asp-controller="Account" asp-action="Logout" method="post">
+                                    <button type="submit" class="nav-link btn btn-link text-dark border-0">Выход</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Вход</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

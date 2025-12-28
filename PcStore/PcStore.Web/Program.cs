@@ -1,7 +1,16 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using PcStore.Web.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Аутентификация через Куки
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login"; // Страница входа, если пользователь не вошел
+        options.AccessDeniedPath = "/Account/AccessDenied"; // Страница отказа в доступе, если нет прав
+    });
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -30,10 +39,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Products}/{action=Index}/{id?}"); // Домашняя страница
 
 app.Run();
