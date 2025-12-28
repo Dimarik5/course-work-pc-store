@@ -3,12 +3,40 @@
   "WorkspaceRootPath": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|e:\\\u0432\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0443\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u043A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\pcstore\\pcstore.web\\controllers\\categoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|solutionrelative:pcstore.web\\controllers\\categoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|e:\\\u0432\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0443\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u043A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\pcstore\\pcstore.web\\controllers\\salescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|solutionrelative:pcstore.web\\controllers\\salescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|e:\\\u0432\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0443\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u043A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\pcstore\\pcstore.web\\controllers\\supplierscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|solutionrelative:pcstore.web\\controllers\\supplierscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|e:\\\u0432\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0443\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u043A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\pcstore\\pcstore.web\\models\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|solutionrelative:pcstore.web\\models\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|e:\\\u0432\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0443\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u043A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\pcstore\\pcstore.web\\models\\sale.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|solutionrelative:pcstore.web\\models\\sale.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|e:\\\u0432\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0443\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u043A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\pcstore\\pcstore.web\\models\\saleitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|solutionrelative:pcstore.web\\models\\saleitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|e:\\\u0432\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0443\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u043A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\pcstore\\pcstore.web\\models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|solutionrelative:pcstore.web\\models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|e:\\\u0432\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0443\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u043A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\pcstore\\pcstore.web\\extensions\\sessionextension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|solutionrelative:pcstore.web\\extensions\\sessionextension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|e:\\\u0432\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0443\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u043A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\pcstore\\pcstore.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|solutionrelative:pcstore.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|e:\\\u0432\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0443\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u043A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\pcstore\\pcstore.web\\controllers\\categoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|solutionrelative:pcstore.web\\controllers\\categoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|e:\\\u0432\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0443\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u043A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\pcstore\\pcstore.web\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -25,10 +53,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|e:\\\u0432\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0443\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u043A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\pcstore\\pcstore.web\\models\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|solutionrelative:pcstore.web\\models\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|e:\\\u0432\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0443\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u043A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\pcstore\\pcstore.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{663819B2-FFC8-4C07-8A01-939914FD2327}|PcStore.Web\\PcStore.Web.csproj|solutionrelative:pcstore.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,11 +62,89 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SalesController.cs",
+              "DocumentMoniker": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Controllers\\SalesController.cs",
+              "RelativeDocumentMoniker": "PcStore.Web\\Controllers\\SalesController.cs",
+              "ToolTip": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Controllers\\SalesController.cs",
+              "RelativeToolTip": "PcStore.Web\\Controllers\\SalesController.cs",
+              "ViewState": "AgIAAG0AAAAAAAAAAAAcwCUAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T20:32:10.379Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Sale.cs",
+              "DocumentMoniker": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Models\\Sale.cs",
+              "RelativeDocumentMoniker": "PcStore.Web\\Models\\Sale.cs",
+              "ToolTip": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Models\\Sale.cs",
+              "RelativeToolTip": "PcStore.Web\\Models\\Sale.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAQwBEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T19:10:14.503Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "SaleItem.cs",
+              "DocumentMoniker": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Models\\SaleItem.cs",
+              "RelativeDocumentMoniker": "PcStore.Web\\Models\\SaleItem.cs",
+              "ToolTip": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Models\\SaleItem.cs",
+              "RelativeToolTip": "PcStore.Web\\Models\\SaleItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T19:04:26.421Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Category.cs",
+              "DocumentMoniker": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Models\\Category.cs",
+              "RelativeDocumentMoniker": "PcStore.Web\\Models\\Category.cs",
+              "ToolTip": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Models\\Category.cs",
+              "RelativeToolTip": "PcStore.Web\\Models\\Category.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T19:04:16.554Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CartItem.cs",
+              "DocumentMoniker": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Models\\CartItem.cs",
+              "RelativeDocumentMoniker": "PcStore.Web\\Models\\CartItem.cs",
+              "ToolTip": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Models\\CartItem.cs",
+              "RelativeToolTip": "PcStore.Web\\Models\\CartItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T18:44:27.614Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "SessionExtension.cs",
+              "DocumentMoniker": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Extensions\\SessionExtension.cs",
+              "RelativeDocumentMoniker": "PcStore.Web\\Extensions\\SessionExtension.cs",
+              "ToolTip": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Extensions\\SessionExtension.cs",
+              "RelativeToolTip": "PcStore.Web\\Extensions\\SessionExtension.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T17:58:39.69Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -59,7 +161,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 8,
               "Title": "CategoriesController.cs",
               "DocumentMoniker": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Controllers\\CategoriesController.cs",
               "RelativeDocumentMoniker": "PcStore.Web\\Controllers\\CategoriesController.cs",
@@ -72,7 +174,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 9,
               "Title": "ProductsController.cs",
               "DocumentMoniker": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Controllers\\ProductsController.cs",
               "RelativeDocumentMoniker": "PcStore.Web\\Controllers\\ProductsController.cs",
@@ -80,12 +182,11 @@
               "RelativeToolTip": "PcStore.Web\\Controllers\\ProductsController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-28T16:43:04.081Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-28T16:43:04.081Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 11,
               "Title": "Login.cshtml",
               "DocumentMoniker": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Views\\Account\\Login.cshtml",
               "RelativeDocumentMoniker": "PcStore.Web\\Views\\Account\\Login.cshtml",
@@ -93,12 +194,11 @@
               "RelativeToolTip": "PcStore.Web\\Views\\Account\\Login.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-12-28T14:51:38.507Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-28T14:51:38.507Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 12,
               "Title": "LoginViewModel.cs",
               "DocumentMoniker": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Models\\LoginViewModel.cs",
               "RelativeDocumentMoniker": "PcStore.Web\\Models\\LoginViewModel.cs",
@@ -106,25 +206,24 @@
               "RelativeToolTip": "PcStore.Web\\Models\\LoginViewModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-28T00:31:18.486Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-28T00:31:18.486Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Program.cs",
               "DocumentMoniker": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Program.cs",
               "RelativeDocumentMoniker": "PcStore.Web\\Program.cs",
               "ToolTip": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Program.cs",
               "RelativeToolTip": "PcStore.Web\\Program.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAAACkAAAAPAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-27T17:20:25.912Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 10,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "E:\\\u0412\u0441\u044F\u043A\u0430\u044F \u0432\u0441\u044F\u0447\u0438\u043D\u0430\\\u0423\u043D\u0438\u0432\u0435\u0440\\3 \u043A\u0443\u0440\u0441\\\u0422\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\\\u041A\u0443\u0440\u0441\u043E\u0432\u0438\u043A\\course-work-pc-store\\PcStore\\PcStore.Web\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "PcStore.Web\\Views\\Shared\\_Layout.cshtml",
@@ -132,8 +231,7 @@
               "RelativeToolTip": "PcStore.Web\\Views\\Shared\\_Layout.cshtml",
               "ViewState": "AgIAABwAAAAAAAAAAAAUwC0AAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-12-27T17:07:35.142Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-27T17:07:35.142Z"
             }
           ]
         }

@@ -12,6 +12,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Account/AccessDenied"; // Страница отказа в доступе, если нет прав
     });
 
+builder.Services.AddSession(); // Сервис сессий
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -36,6 +38,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseSession();
 
 app.UseRouting();
 
