@@ -1,0 +1,80 @@
+﻿@model PcStore.Web.Models.SaleReportViewModel
+
+@{
+    ViewData["Title"] = "Отчет по продажам";
+}
+
+<h2>Отчет по продажам</h2>
+
+<!-- Форма выбора периода -->
+<div class="card mb-4 mt-3">
+    <div class="card-body bg-light">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label asp-for="StartDate" class="form-label fw-bold"></label>
+                <input asp-for="StartDate" class="form-control" type="date" />
+            </div>
+            <div class="col-md-3">
+                <label asp-for="EndDate" class="form-label fw-bold"></label>
+                <input asp-for="EndDate" class="form-control" type="date" />
+            </div>
+            <div class="col-md-3 d-flex gap-2">
+                <!-- Кнопка просмотра на экране -->
+                <button type="submit" asp-action="Index" class="btn btn-primary flex-grow-1">Показать</button>
+                <!-- Кнопка скачивания PDF -->
+                <button type="submit" asp-action="ExportPdf" class="btn btn-danger">
+                    📄 PDF
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Карточки с итогами -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-header">Общая выручка</div>
+            <div class="card-body">
+                <h2 class="card-title">@Model.TotalRevenue.ToString("C")</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-header">Количество продаж</div>
+            <div class="card-body">
+                <h2 class="card-title">@Model.SalesCount</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Таблица -->
+<h4>Детализация:</h4>
+@if (Model.Sales.Any())
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Продавец</th>
+                <th class="text-end">Сумма</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Sales)
+            {
+                <tr>
+                    <td>@item.DateTime.ToString("g")</td>
+                    <td>@item.User?.FullName</td>
+                    <td class="text-end">@item.TotalAmount.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-warning">За выбранный период продаж не найдено.</div>
+}

@@ -40,6 +40,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Sales" asp-action="History">История продаж</a>
                         </li>
+                        @if (User.IsInRole("Менеджер"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-danger fw-bold" asp-controller="Reports" asp-action="Index">ОТЧЕТЫ</a>
+                            </li>
+                        }
                     </ul>
                     <!-- Меню с пользователем -->
                     <ul class="navbar-nav ms-auto">

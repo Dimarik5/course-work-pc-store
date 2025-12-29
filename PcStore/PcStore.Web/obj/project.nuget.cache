@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "JqffjoUbtsU=",
+  "dgSpecHash": "0Gbl9K9g4Wg=",
   "success": true,
   "projectFilePath": "E:\\Всякая всячина\\Универ\\3 курс\\Технологии программирования\\Курсовик\\course-work-pc-store\\PcStore\\PcStore.Web\\PcStore.Web.csproj",
   "expectedPackageFiles": [
@@ -108,6 +108,7 @@
     "C:\\Users\\MSI\\.nuget\\packages\\nuget.protocol\\6.11.0\\nuget.protocol.6.11.0.nupkg.sha512",
     "C:\\Users\\MSI\\.nuget\\packages\\nuget.versioning\\6.11.0\\nuget.versioning.6.11.0.nupkg.sha512",
     "C:\\Users\\MSI\\.nuget\\packages\\pomelo.entityframeworkcore.mysql\\8.0.3\\pomelo.entityframeworkcore.mysql.8.0.3.nupkg.sha512",
+    "C:\\Users\\MSI\\.nuget\\packages\\questpdf\\2025.12.1\\questpdf.2025.12.1.nupkg.sha512",
     "C:\\Users\\MSI\\.nuget\\packages\\system.codedom\\5.0.0\\system.codedom.5.0.0.nupkg.sha512",
     "C:\\Users\\MSI\\.nuget\\packages\\system.collections.immutable\\8.0.0\\system.collections.immutable.8.0.0.nupkg.sha512",
     "C:\\Users\\MSI\\.nuget\\packages\\system.composition\\7.0.0\\system.composition.7.0.0.nupkg.sha512",

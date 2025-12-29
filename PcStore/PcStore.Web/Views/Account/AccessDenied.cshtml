@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Доступ запрещен";
+}
+
+<div class="container mt-5 text-center">
+    <div class="card border-danger shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-body p-5">
+            <h1 class="text-danger display-1">⛔</h1>
+            <h2 class="card-title text-danger">Доступ запрещен</h2>
+            <p class="card-text lead">У вас недостаточно прав для просмотра этой страницы.</p>
+            <hr />
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a asp-controller="Products" asp-action="Index" class="btn btn-outline-secondary">Вернуться к товарам</a>
+                <a asp-controller="Account" asp-action="Login" class="btn btn-primary">Войти под другим пользователем</a>
+            </div>
+        </div>
+    </div>
+</div>

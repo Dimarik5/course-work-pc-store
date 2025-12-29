@@ -196,6 +196,13 @@ namespace PcStore.Web.Controllers
             var product = await _context.Products.FindAsync(id);
             if (product == null) return NotFound();
 
+            // Проверка обязательного ввода причины списания
+            if (string.IsNullOrWhiteSpace(reason))
+            {
+                ModelState.AddModelError("", "Укажите причину списания");
+                return View(product);
+            }
+
             if (quantity <= 0)
             {
                 ModelState.AddModelError("", "Количество должно быть больше 0");
