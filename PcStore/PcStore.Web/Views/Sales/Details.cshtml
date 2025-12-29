@@ -1,0 +1,94 @@
+﻿@model PcStore.Web.Models.Sale
+
+@{
+    ViewData["Title"] = $"Чек №{Model.Id}";
+
+    // Скидка
+    decimal subTotal = Model.SaleItems.Sum(x => x.PriceAtSale * x.Quantity);
+    decimal discount = subTotal - Model.TotalAmount;
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Чек продажи №@Model.Id</h4>
+                <span class="badge bg-primary fs-6">@Model.DateTime.ToString("g")</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-sm-6">
+                    <h6 class="text-muted">Продавец:</h6>
+                    <p class="fw-bold">@Model.User?.FullName</p>
+                </div>
+                <div class="col-sm-6 text-end">
+                    <h6 class="text-muted">Итоговая сумма:</h6>
+                    <h3 class="text-success">@Model.TotalAmount.ToString("C")</h3>
+                </div>
+            </div>
+
+            <h5>Список товаров:</h5>
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Товар</th>
+                        <th class="text-center">Цена на момент продажи</th>
+                        <th class="text-center">Количество</th>
+                        <th class="text-end">Сумма</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.SaleItems)
+                    {
+                        <tr>
+                            <td>
+                                @if (item.Product != null)
+                                {
+                                    @item.Product.Name
+                                    <br />
+                                    <small class="text-muted">Артикул: @item.Product.Sku</small>
+                                }
+                                else
+                                {
+                                    <span class="text-danger">Товар был удален из базы</span>
+                                }
+                            </td>
+                            <td class="text-center">@item.PriceAtSale.ToString("C")</td>
+                            <td class="text-center">@item.Quantity</td>
+                            <td class="text-end">@((item.PriceAtSale * item.Quantity).ToString("C"))</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <!-- ИТОГИ -->
+            <div class="row justify-content-end mt-3">
+                <div class="col-md-5 col-lg-4">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Подытог:</span>
+                            <strong>@subTotal.ToString("C")</strong>
+                        </li>
+
+                        @if (discount > 0.01m)
+                        {
+                            <li class="list-group-item d-flex justify-content-between text-success">
+                                <span>Скидка:</span>
+                                <strong>-@discount.ToString("C")</strong>
+                            </li>
+                        }
+
+                        <li class="list-group-item d-flex justify-content-between bg-light">
+                            <span class="fs-5">ИТОГО:</span>
+                            <span class="fs-5 fw-bold text-primary">@Model.TotalAmount.ToString("C")</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a asp-action="History" class="btn btn-secondary">Назад к истории</a>
+        </div>
+    </div>
+</div>

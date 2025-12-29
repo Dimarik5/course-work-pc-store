@@ -18,10 +18,20 @@ namespace PcStore.Web.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        // Добавлен параметр поиска searchString
+        public async Task<IActionResult> Index(string searchString)
         {
-            var appDbContext = _context.Products.Include(p => p.Category).Include(p => p.Supplier);
-            return View(await appDbContext.ToListAsync());
+            // Получение товаров
+            var products = _context.Products.Include(p => p.Category).Include(p => p.Supplier).AsQueryable();
+
+            // Если строка поиска не пустая - отфильтровать строку
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                // Поиск по названию или по артикулу
+                products = products.Where(p => p.Name.Contains(searchString) || p.Sku.Contains(searchString));
+            }
+
+            return View(await products.ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -163,6 +173,46 @@ namespace PcStore.Web.Controllers
         private bool ProductExists(int id)
         {
             return _context.Products.Any(e => e.Id == id);
+        }
+
+        // Показать страницу списания
+        [HttpGet]
+        [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
+        public async Task<IActionResult> WriteOff(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var product = await _context.Products.FindAsync(id);
+            if (product == null) return NotFound();
+
+            return View(product);
+        }
+
+        // Выполнить списание
+        [HttpPost]
+        [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
+        public async Task<IActionResult> WriteOff(int id, int quantity, string reason)
+        {
+            var product = await _context.Products.FindAsync(id);
+            if (product == null) return NotFound();
+
+            if (quantity <= 0)
+            {
+                ModelState.AddModelError("", "Количество должно быть больше 0");
+                return View(product);
+            }
+
+            if (product.QuantityInStock < quantity)
+            {
+                ModelState.AddModelError("", "Нельзя списать больше, чем есть на складе");
+                return View(product);
+            }
+
+            product.QuantityInStock -= quantity;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

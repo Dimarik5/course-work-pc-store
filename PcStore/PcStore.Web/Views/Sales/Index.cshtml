@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = "Терминал продажи";
     var cart = ViewBag.Cart as List<PcStore.Web.Models.CartItem>;
-    var cartTotal = (decimal)ViewBag.CartTotal;
 }
 
 <div class="container-fluid">
@@ -10,6 +9,14 @@
         <!-- Слева: каталог товаров -->
         <div class="col-md-8">
             <h3>Каталог товаров</h3>
+
+            <form asp-action="Index" method="get" class="mb-3">
+                <div class="input-group">
+                    <input type="text" name="searchString" class="form-control" placeholder="Поиск по названию или артикулу..." />
+                    <button type="submit" class="btn btn-outline-primary">Найти</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Сброс</a>
+                </div>
+            </form>
 
             <div class="row">
                 @foreach (var product in Model)
@@ -65,15 +72,37 @@
                         </table>
 
                         <hr />
-                        <h3 class="text-end">Итого: @cartTotal.ToString("C")</h3>
+
+                        <!-- Блок итогов -->
+                        <div class="d-flex justify-content-between">
+                            <span>Подытог:</span>
+                            <span class="fw-bold">@(((decimal)ViewBag.SubTotal).ToString("C"))</span>
+                        </div>
+
+                        @if (ViewBag.DiscountAmount > 0)
+                        {
+                            <div class="d-flex justify-content-between text-success">
+                                <span>Скидка (@ViewBag.DiscountPercent%):</span>
+                                <span class="fw-bold">-@(((decimal)ViewBag.DiscountAmount).ToString("C"))</span>
+                            </div>
+                        }
+
+                        <div class="d-flex justify-content-between mt-2">
+                            <h3>ИТОГО:</h3>
+                            <h3 class="text-primary">@(((decimal)ViewBag.GrandTotal).ToString("C"))</h3>
+                        </div>
+
+                        <!-- Форма скидки -->
+                        <form asp-action="ApplyDiscount" method="post" class="input-group my-3">
+                            <input type="text" name="code" class="form-control" placeholder="Промокод (PROMO10, STUDENT, VIP)" />
+                            <button type="submit" class="btn btn-outline-secondary">Применить</button>
+                        </form>
 
                         <div class="d-grid gap-2 mt-3">
-                            <!-- Кнопка Оформить -->
-                            <form asp-action="Checkout" method="post">
+                            <form asp-action="FinalizeSale" method="post">
                                 <button type="submit" class="btn btn-lg btn-primary w-100">Оформить продажу</button>
                             </form>
 
-                            <!-- Кнопка Очистить -->
                             <form asp-action="ClearCart" method="post">
                                 <button type="submit" class="btn btn-outline-danger w-100">Сбросить чек</button>
                             </form>
@@ -86,5 +115,3 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>

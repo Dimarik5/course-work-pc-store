@@ -1,0 +1,34 @@
+﻿@model PcStore.Web.Models.Product
+
+@{
+    ViewData["Title"] = "Списание товара";
+}
+
+<h2>Списание товара</h2>
+
+<div class="card shadow-sm" style="max-width: 500px;">
+    <div class="card-body">
+        <h4 class="card-title text-danger">@Model.Name</h4>
+        <p class="text-muted">Текущий остаток: <b>@Model.QuantityInStock</b> шт.</p>
+        <hr />
+
+        <form asp-action="WriteOff" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
+
+            <div class="mb-3">
+                <label class="form-label">Количество для списания:</label>
+                <input type="number" name="quantity" class="form-control" min="1" max="@Model.QuantityInStock" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Причина (Брак, Утеря, Порча):</label>
+                <textarea name="reason" class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+                <button type="submit" class="btn btn-danger">Списать</button>
+            </div>
+        </form>
+    </div>
+</div>
