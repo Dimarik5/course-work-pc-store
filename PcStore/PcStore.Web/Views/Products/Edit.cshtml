@@ -1,64 +1,83 @@
 ﻿@model PcStore.Web.Models.Product
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Редактирование";
+    Layout = "_Layout";
 }
 
-<h1>Edit</h1>
+<div class="admin-container scrollable">
+    <div class="form-card">
+        <h2 class="page-title text-center mb-4" style="justify-content: center">РЕДАКТИРОВАНИЕ</h2>
 
-<h4>Product</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
         <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <!-- Скрытый ID -->
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Sku" class="control-label"></label>
-                <input asp-for="Sku" class="form-control" />
-                <span asp-validation-for="Sku" class="text-danger"></span>
+
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label asp-for="Sku" class="control-label"></label>
+                    <input asp-for="Sku" class="form-control" />
+                    <span asp-validation-for="Sku" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label class="control-label text-muted">Остаток (шт.)</label>
+                    <div class="text-white border border-secondary rounded bg-dark d-flex justify-content-between align-items-center" style="padding: 6px">
+                        <span>@Model.QuantityInStock</span>
+                        <span class="text-muted small">(изм. через
+                            <a asp-action="WriteOff" asp-route-id="@Model.Id" class="text-warning text-decoration-underline">списание</a>/<a asp-action="Supply" asp-route-id="@Model.Id" class="text-warning text-decoration-underline">поставку</a>)
+                        </span>
+                    </div>
+                    <!-- Поле скрыто, чтобы значение вернулось в контроллер и не затёрлось нулём -->
+                    <input type="hidden" asp-for="QuantityInStock" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
+
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label asp-for="CategoryId" class="control-label"></label>
+                    <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="SupplierId" class="control-label"></label>
+                    <select asp-for="SupplierId" class="form-control" asp-items="ViewBag.SupplierId"></select>
+                </div>
             </div>
+
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+                <div class="input-group">
+                    <input asp-for="Price" class="form-control" type="number" step="0.01" style="font-family: 'MTSans-Display'; font-size: 1.2rem;" />
+                    <span class="input-group-text bg-dark text-white border-secondary">₽</span>
+                </div>
+                <span asp-validation-for="Price" class="text-danger small"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="QuantityInStock" class="control-label"></label>
-                <input asp-for="QuantityInStock" class="form-control" />
-                <span asp-validation-for="QuantityInStock" class="text-danger"></span>
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Description" class="text-danger small"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SupplierId" class="control-label"></label>
-                <select asp-for="SupplierId" class="form-control" asp-items="ViewBag.SupplierId"></select>
-                <span asp-validation-for="SupplierId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-outline-secondary px-4">Отмена</a>
+                <button type="submit" class="btn btn-primary px-4">Сохранить</button>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -1,18 +1,32 @@
 ﻿@{
     ViewData["Title"] = "Доступ запрещен";
+    Layout = "_EmptyLayout";
 }
 
-<div class="container mt-5 text-center">
-    <div class="card border-danger shadow-sm mx-auto" style="max-width: 600px;">
-        <div class="card-body p-5">
-            <h1 class="text-danger display-1">⛔</h1>
-            <h2 class="card-title text-danger">Доступ запрещен</h2>
-            <p class="card-text lead">У вас недостаточно прав для просмотра этой страницы.</p>
-            <hr />
-            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                <a asp-controller="Products" asp-action="Index" class="btn btn-outline-secondary">Вернуться к товарам</a>
-                <a asp-controller="Account" asp-action="Login" class="btn btn-primary">Войти под другим пользователем</a>
-            </div>
+<div class="auth-overlay">
+
+    <div class="auth-card text-center" style="border-color: var(--danger); box-shadow: 0 0 50px rgba(247, 90, 104, 0.2);">
+
+        <!-- Иконка в круге -->
+        <div class="denied-icon-wrapper mx-auto">
+            <i class="bi bi-shield-lock-fill" style="font-size: 3.5rem; color: var(--danger);"></i>
         </div>
+
+        <h2 class="page-title text-center text-danger mb-3" style="justify-content: center;">ДОСТУП ЗАПРЕЩЕН</h2>
+
+        <p class="text-muted mb-4 fs-5">
+            У вашей учетной записи нет прав<br>для просмотра этой страницы.
+        </p>
+
+        <div class="d-grid gap-3">
+            <a asp-controller="Products" asp-action="Index" class="btn btn-outline-secondary py-3 fw-bold">
+                <i class="bi bi-arrow-left me-2"></i> ВЕРНУТЬСЯ НА СКЛАД
+            </a>
+
+            <a asp-controller="Account" asp-action="Login" class="btn btn-danger py-3 fw-bold" style="border: none;">
+                СМЕНИТЬ АККАУНТ
+            </a>
+        </div>
+
     </div>
 </div>

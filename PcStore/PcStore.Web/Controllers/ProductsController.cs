@@ -19,10 +19,14 @@ namespace PcStore.Web.Controllers
 
         // GET: Products
         // Добавлен параметр поиска searchString
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, int? categoryId, int? supplierId)
         {
             // Получение товаров
-            var products = _context.Products.Include(p => p.Category).Include(p => p.Supplier).AsQueryable();
+            var products = _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Supplier)
+                .Where(p => !p.IsArchived) // Скрыть архивированные товары
+                .AsQueryable();
 
             // Если строка поиска не пустая - отфильтровать строку
             if (!string.IsNullOrEmpty(searchString))
@@ -31,7 +35,12 @@ namespace PcStore.Web.Controllers
                 products = products.Where(p => p.Name.Contains(searchString) || p.Sku.Contains(searchString));
             }
 
-            return View(await products.ToListAsync());
+            // Данные для фильтров
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", categoryId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", supplierId);
+
+            // Изначальный запрос
+            return View(new List<Product>());
         }
 
         // GET: Products/Details/5
@@ -136,6 +145,7 @@ namespace PcStore.Web.Controllers
         }
 
         // GET: Products/Delete/5
+        [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -155,18 +165,26 @@ namespace PcStore.Web.Controllers
             return View(product);
         }
 
+        // Архивация
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var product = await _context.Products.FindAsync(id);
-            if (product != null)
+            if (product == null) return NotFound();
+
+            // Проверка на количество
+            if (product.QuantityInStock > 0)
             {
-                _context.Products.Remove(product);
+                return RedirectToAction(nameof(Delete), new { id = id });
             }
 
+            product.IsArchived = true;
+            _context.Products.Update(product);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -196,22 +214,42 @@ namespace PcStore.Web.Controllers
             var product = await _context.Products.FindAsync(id);
             if (product == null) return NotFound();
 
+            bool hasError = false;
+
+            // Проверка количества 1
+            if (quantity <= 0)
+            {
+                ModelState.AddModelError("", "Количество должно быть больше 0");
+                ViewBag.Reason = reason;
+                hasError = true;
+            }
+
+            // Проверка количества 2
+            if (product.QuantityInStock < quantity)
+            {
+                ModelState.AddModelError("", $"Нельзя списать больше, чем есть на складе ({product.QuantityInStock})");
+                ViewBag.Reason = reason;
+                hasError = true;
+            }
+
             // Проверка обязательного ввода причины списания
             if (string.IsNullOrWhiteSpace(reason))
             {
                 ModelState.AddModelError("", "Укажите причину списания");
-                return View(product);
+                if (hasError)
+                {
+                    ViewBag.Quantity = null;
+                }
+                else
+                {
+                    ViewBag.Quantity = quantity;
+                }
+                hasError = true;
             }
 
-            if (quantity <= 0)
+            // Итог ошибок
+            if (hasError)
             {
-                ModelState.AddModelError("", "Количество должно быть больше 0");
-                return View(product);
-            }
-
-            if (product.QuantityInStock < quantity)
-            {
-                ModelState.AddModelError("", "Нельзя списать больше, чем есть на складе");
                 return View(product);
             }
 
@@ -220,6 +258,125 @@ namespace PcStore.Web.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        // Показать страницу поставки
+        [HttpGet]
+        [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
+        public async Task<IActionResult> Supply(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var product = await _context.Products.FindAsync(id);
+            if (product == null) return NotFound();
+
+            return View(product);
+        }
+
+        // Выполнить поставку
+        [HttpPost]
+        [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
+        public async Task<IActionResult> Supply(int id, int quantity, string source)
+        {
+            var product = await _context.Products.FindAsync(id);
+            if (product == null) return NotFound();
+
+            bool hasError = false;
+
+            // Проверка количества 1
+            if (quantity <= 0)
+            {
+                ModelState.AddModelError("", "Количество должно быть больше 0");
+                ViewBag.Source = source;
+                hasError = true;
+            }
+
+            // Проверка количества 2
+            if (quantity > 10000 - product.QuantityInStock)
+            {
+                ModelState.AddModelError("", $"Превышено доступное место под этот товар ({10000 - product.QuantityInStock})");
+                ViewBag.Source = source;
+                hasError = true;
+            }
+
+            // Проверка обязательного ввода накладной
+            if (string.IsNullOrWhiteSpace(source))
+            {
+                ModelState.AddModelError("", "Укажите номер накладной");
+                if (hasError)
+                {
+                    ViewBag.Quantity = null;
+                }
+                else
+                {
+                    ViewBag.Quantity = quantity;
+                }
+                hasError = true;
+            }
+
+            // Итог ошибок
+            if (hasError)
+            {
+                return View(product);
+            }
+
+            product.QuantityInStock += quantity;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // Поиск
+        [HttpGet]
+        public async Task<IActionResult> Search(string searchString, int? categoryId, int? supplierId, string sortOrder)
+        {
+            var query = _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Supplier)
+                .Where(p => !p.IsArchived) // Скрыть архивированные товары
+                .AsQueryable();
+
+            // ПОИСК
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(p => p.Name.Contains(searchString) || p.Sku.Contains(searchString));
+            }
+
+            // ФИЛЬТРАЦИЯ
+            if (categoryId.HasValue && categoryId > 0)
+            {
+                query = query.Where(p => p.CategoryId == categoryId);
+            }
+
+            if (supplierId.HasValue && supplierId > 0)
+            {
+                query = query.Where(p => p.SupplierId == supplierId);
+            }
+
+            // СОРТИРОВКА
+            switch (sortOrder)
+            {
+                case "price_desc":
+                    query = query.OrderByDescending(p => p.Price);
+                    break;
+                case "price_asc":
+                    query = query.OrderBy(p => p.Price);
+                    break;
+                case "qty_asc":
+                    query = query.OrderBy(p => p.QuantityInStock);
+                    break;
+                case "qty_desc":
+                    query = query.OrderByDescending(p => p.QuantityInStock);
+                    break;
+                default: // По умолчанию - сначала новые (по ID)
+                    query = query.OrderByDescending(p => p.Id);
+                    break;
+            }
+
+            var products = await query.ToListAsync();
+
+            return PartialView("_ProductsTablePartial", products);
         }
     }
 }

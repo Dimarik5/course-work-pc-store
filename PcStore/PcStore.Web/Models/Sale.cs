@@ -24,6 +24,14 @@ namespace PcStore.Web.Models
         [Display(Name = "Продавец")]
         public int UserId { get; set; }
 
+        // Статус продажи
+        [Display(Name = "Статус")]
+        public SaleStatus Status { get; set; } = SaleStatus.Draft;
+
+        // Процент скидки
+        [Display(Name = "Скидка (%)")]
+        public decimal DiscountPercent { get; set; } = 0; // По умолчанию 0
+
         // --- СВЯЗИ ---
 
         // Внешний ключ на пользователя

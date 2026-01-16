@@ -1,41 +1,89 @@
 ﻿@model IEnumerable<PcStore.Web.Models.Supplier>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Поставщики";
+    Layout = "_Layout";
 }
 
-<h1>Index</h1>
+<div class="admin-container" style="padding-bottom: 0;">
+    <h1 class="page-title">
+        <i class="bi bi-truck text-primary"></i> Поставщики
+    </h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ContactInfo)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContactInfo)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+    <!-- Панель инструментов -->
+    <div class="d-flex flex-wrap gap-3 align-items-center justify-content-between">
+
+            <!-- Поиск -->
+            <div class="search-bar flex-grow-1 mb-0">
+                <i class="bi bi-search text-muted me-3"></i>
+                <input type="text" id="adminSearchInput" class="search-input" autofocus
+                       placeholder="Название поставщика..." value="@Context.Request.Query["searchString"]" autocomplete="off" />
+                <!-- Спиннер -->
+                <div id="admin-spinner" class="spinner-border text-primary spinner-border-sm ms-2" role="status" style="display: none;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+        <!-- Кнопка создания -->
+        <a asp-action="Create" class="btn btn-primary d-flex align-items-center px-4" style="height: 45px; border-radius: 100px;">
+            <i class="bi bi-plus-lg me-2"></i>
+            <span style="font-family: 'MTSans-Display'; white-space: nowrap">НОВЫЙ ПОСТАВЩИК</span>
+        </a>
+    </div>
+
+
+    <!-- Сетка категорий -->
+    <div class="fade-wrapper" id="suppliers-container" style="flex-grow: 1; overflow-y: auto; min-height: 0;">
+        <partial name="_SupplierListPartial" />
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        // Запускаем инициализацию
+        document.addEventListener('DOMContentLoaded', function () {
+            initCustomSelects();
+        });
+
+        // Для поиска
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('adminSearchInput');
+            const suppliersContainer = document.getElementById('suppliers-container');
+            const spinner = document.getElementById('admin-spinner');
+
+            let timeout = null;
+
+            // Главная функция загрузки
+            function loadData() {
+                // Собираем все значения
+                const query = searchInput.value;
+
+                spinner.style.display = 'block';
+
+                // URL с параметрами
+                const url = `@Url.Action("Search", "Suppliers")?searchString=${encodeURIComponent(query)}`;
+
+                fetch(url)
+                    .then(response => response.text())
+                    .then(html => {
+                        suppliersContainer.innerHTML = html;
+                        spinner.style.display = 'none';
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        spinner.style.display = 'none';
+                    });
+            }
+
+            // Слушатель для поиска (с задержкой)
+            searchInput.addEventListener('input', function () {
+                clearTimeout(timeout);
+                timeout = setTimeout(loadData, 300);
+            });
+
+            // Загружаем данные сразу при открытии страницы
+            loadData();
+        });
+    </script>
 }
-    </tbody>
-</table>

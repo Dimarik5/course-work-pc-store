@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PcStore.Web.Data;
@@ -6,6 +7,7 @@ using PcStore.Web.Models;
 
 namespace PcStore.Web.Controllers
 {
+    [Authorize(Roles = "Менеджер")] // К контроллеру имеет доступ только менеджер
     public class UsersController : Controller
     {
         private readonly AppDbContext _context;
@@ -16,10 +18,18 @@ namespace PcStore.Web.Controllers
         }
 
         // GET: Users
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            var appDbContext = _context.Users.Include(u => u.Role);
-            return View(await appDbContext.ToListAsync());
+            // Загрузка пользователей вместе с их ролями
+            var users = _context.Users.Include(u => u.Role).AsQueryable();
+
+            // Поиск пользователя (по логину или ФИО)
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                users = users.Where(u => u.Login.Contains(searchString) || u.FullName.Contains(searchString));
+            }
+
+            return View(await users.ToListAsync());
         }
 
         // GET: Users/Details/5
@@ -145,10 +155,11 @@ namespace PcStore.Web.Controllers
             var user = await _context.Users.FindAsync(id);
             if (user != null)
             {
-                _context.Users.Remove(user);
-            }
+                user.IsBlocked = true; // Блокировка пользователя
 
-            await _context.SaveChangesAsync();
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
 

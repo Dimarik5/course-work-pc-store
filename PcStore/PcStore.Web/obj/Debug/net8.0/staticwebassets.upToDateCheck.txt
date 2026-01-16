@@ -1,5 +1,11 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\fonts\MTSans-BlackCondensed.ttf
+wwwroot\fonts\MTSans-BlackExtended.ttf
+wwwroot\fonts\MTSans-Bold.ttf
+wwwroot\fonts\MTSans-BoldCondensed.ttf
+wwwroot\fonts\MTSans-LightCondensed.ttf
+wwwroot\fonts\MTSans-RegularCondensed.ttf
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map

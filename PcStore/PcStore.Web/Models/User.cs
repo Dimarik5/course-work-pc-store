@@ -23,13 +23,19 @@ namespace PcStore.Web.Models
         // Пароль пользователя
         [Display(Name = "Пароль")]
         [Required(ErrorMessage = "Введите пароль")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        // Статус блокировки
+        [Display(Name = "Заблокирован")]
+        public bool IsBlocked { get; set; } = false;
 
         // --- СВЯЗИ ---
 
         // Внешний ключ на роль
         [Display(Name = "Роль")]
         public int RoleId { get; set; }
-        public virtual Role Role { get; set; }
+        [Display(Name = "Роль")]
+        public virtual Role? Role { get; set; }
     }
 }

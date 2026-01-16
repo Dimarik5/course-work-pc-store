@@ -9,7 +9,7 @@ using QuestPDF.Infrastructure;
 
 namespace PcStore.Web.Controllers
 {
-    [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
+    [Authorize(Roles = "Менеджер")] // К контроллеру имеет доступ только менеджер
     public class ReportsController : Controller
     {
         private readonly AppDbContext _context;
@@ -138,7 +138,7 @@ namespace PcStore.Web.Controllers
                 });
             });
 
-            // 3. Возврат файла
+            // Возврат файла
             byte[] pdfBytes = document.GeneratePdf();
             return File(pdfBytes, "application/pdf", $"Report_{start:yyyyMMdd}_{end:yyyyMMdd}.pdf");
         }

@@ -1,94 +1,90 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PcStore.Web</title>
+    <title>@ViewData["Title"] - PC Store</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PcStore.Web.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PcStore.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <!-- Ссылка на Товары -->
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Товары</a>
-                        </li>
-                        <!-- Ссылка на Категории -->
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Категории</a>
-                        </li>
-                        <!-- Ссылка на Поставщиков -->
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Suppliers" asp-action="Index">Поставщики</a>
-                        </li>
+    <div class="app-wrapper">
 
-                        <!-- Новая продажа -->
-                        <li class="nav-item">
-                            <a class="nav-link text-primary fw-bold" asp-controller="Sales" asp-action="Index">НОВАЯ ПРОДАЖА</a>
-                        </li>
-                        <!-- История продаж -->
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Sales" asp-action="History">История продаж</a>
-                        </li>
-                        @if (User.IsInRole("Менеджер"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-danger fw-bold" asp-controller="Reports" asp-action="Index">ОТЧЕТЫ</a>
-                            </li>
-                        }
-                    </ul>
-                    <!-- Меню с пользователем -->
-                    <ul class="navbar-nav ms-auto">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <span class="nav-link text-dark">
-                                    <!-- Приветствие с ФИО из Claims, заполненного при входе -->
-                                    Здравствуйте, <b>@User.FindFirst("FullName")?.Value</b> (@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value)
-                                </span>
-                            </li>
-                            <li class="nav-item">
-                                <!-- Кнопка выхода -->
-                                <form class="form-inline" asp-controller="Account" asp-action="Logout" method="post">
-                                    <button type="submit" class="nav-link btn btn-link text-dark border-0">Выход</button>
-                                </form>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Вход</a>
-                            </li>
-                        }
-                    </ul>
-                </div>
+        <!-- ГЛОБАЛЬНЫЙ САЙДБАР -->
+        <aside class="pos-sidebar">
+            @{
+                string GetActive(string controller, string action = null)
+                {
+                    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+                    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+
+                    if (!string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase))
+                        return "";
+
+                    if (action == null)
+                        return "active";
+
+                    return string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+                }
+            }
+
+            <!-- Логотип -->
+            <div class="logo" style="font-family: 'MTSans-Display', sans-serif; font-weight: 700; font-size: 24px; margin-bottom: 40px;">
+                PC<span>S</span>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+            <!-- Начало меню -->
+            <a asp-controller="Products" asp-action="Index" class="sidebar-icon @GetActive("Products")" title="Склад">
+                <i class="bi bi-box-seam"></i>
+            </a>
+
+            <a asp-controller="Categories" asp-action="Index" class="sidebar-icon @GetActive("Categories")" title="Категории">
+                <i class="bi bi-tags"></i>
+            </a>
+
+            <a asp-controller="Suppliers" asp-action="Index" class="sidebar-icon @GetActive("Suppliers")" title="Поставщики">
+                <i class="bi bi-truck"></i>
+            </a>
+
+            <a asp-controller="Sales" asp-action="Index" class="sidebar-icon @GetActive("Sales", "Index")" title="Терминал">
+                <i class="bi bi-cart4"></i>
+            </a>
+
+            @if (User.IsInRole("Менеджер"))
+            {
+                <a asp-controller="Sales" asp-action="History" class="sidebar-icon @GetActive("Sales", "History")" title="История">
+                    <i class="bi bi-clock-history"></i>
+                </a>
+
+                <a asp-controller="Reports" asp-action="Index" class="sidebar-icon @GetActive("Reports")" title="Отчеты">
+                    <i class="bi bi-graph-up"></i>
+                </a>
+
+                <a asp-controller="Users" asp-action="Index" class="sidebar-icon @GetActive("Users")" title="Персонал">
+                    <i class="bi bi-people"></i>
+                </a>
+            }
+            <!-- Конец меню -->
+
+            <div style="flex-grow: 1"></div>
+
+            <form asp-controller="Account" asp-action="Logout" method="post">
+                <button type="submit" class="sidebar-icon" style="background: none; border: none; cursor: pointer;" title="Выход">
+                    <i class="bi bi-box-arrow-right"></i>
+                </button>
+            </form>
+        </aside>
+
+        <!-- Основной контент -->
+        <main class="app-main-content">
             @RenderBody()
         </main>
+
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - PcStore.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

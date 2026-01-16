@@ -1,0 +1,90 @@
+﻿@model IEnumerable<PcStore.Web.Models.Product>
+
+<div class="table-card">
+    <!-- Обертка для вертикального и горизонтального скролла -->
+    <div class="table-responsive-custom">
+        @if (!Model.Any())
+        {
+            <div class="text-center text-muted w-100 mt-5">
+                <i class="bi bi-search display-1"></i>
+                <p class="mt-3">Ничего не найдено</p>
+            </div>
+        }
+        else
+        {
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 28%">ТОВАР</th>
+                        <th class="text-center" style="width: 15%;">КАТЕГОРИЯ</th>
+                        <th class="text-center" style="width: 15%;">ПОСТАВЩИК</th>
+                        <th class="text-center" style="width: 17%;">ЦЕНА</th>
+                        <th class="text-center" style="width: 10%; white-space:nowrap">ОСТАТОК (ШТ.)</th>
+                        <th class="text-end" style="width: 15%;">ДЕЙСТВИЯ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="fw-bold text-white">@item.Name</div>
+                                <div class="tech-sku" style="font-family: 'MTSans-Condensed'; opacity: 0.7;">Артикул: @item.Sku</div>
+                            </td>
+                            <td class="text-center">
+                                <span class="card-badge">@item.Category?.Name</span>
+                            </td>
+                            <td class="text-center">
+                                @item.Supplier?.Name
+                            </td>
+                            <td class="text-center" style="font-family: 'MTSans-Display'; color: var(--accent); font-size: 1.1rem;">
+                                @item.Price.ToString("N2") ₽
+                            </td>
+                            <td class="text-center">
+                                @if (item.QuantityInStock < 5)
+                                {
+                                    <span class="text-danger fw-bold">@item.QuantityInStock</span>
+                                }
+                                else
+                                {
+                                    <span class="text-success">@item.QuantityInStock</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                <div class="d-inline-flex gap-1">
+
+                                    <!-- Общедоступная группа -->
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="action-btn" title="Редактировать"><i class="bi bi-pencil-fill"></i></a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="action-btn" title="Подробнее"><i class="bi bi-eye-fill"></i></a>
+
+                                    <!-- Группа для менеджера -->
+                                    @if (User.IsInRole("Менеджер"))
+                                    {
+                                        <div style="width: 1px; background: var(--border); border-radius: 8px; margin: 0 5px;"></div>
+
+                                        <!-- Пополнить (зелёный плюс) -->
+                                        <a asp-action="Supply" asp-route-id="@item.Id" class="action-btn success" style="color: var(--success);" title="Поставка товара">
+                                            <i class="bi bi-plus-square"></i>
+                                        </a>
+
+                                        <!-- Списать (красный минус) -->
+                                        <a asp-action="WriteOff" asp-route-id="@item.Id" class="action-btn danger" style="color: var(--danger);" title="Списание товара">
+                                            <i class="bi bi-dash-square"></i>
+                                        </a>
+
+                                        <div style="width: 1px; background: var(--border); border-radius: 8px; margin: 0 5px;"></div>
+
+                                        <!-- Архивация -->
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="action-btn danger" title="В архив">
+                                            <i class="bi bi-archive-fill"></i>
+                                        </a>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

@@ -35,6 +35,13 @@ namespace PcStore.Web.Controllers
 
                 if (user != null)
                 {
+                    // Проверка на заблокированного пользователя
+                    if (user.IsBlocked)
+                    {
+                        ModelState.AddModelError("", "Этот сотрудник уволен или заблокирован.");
+                        return View(model);
+                    }
+
                     // Сбор данных о пользователе
                     var claims = new List<Claim>
                     {

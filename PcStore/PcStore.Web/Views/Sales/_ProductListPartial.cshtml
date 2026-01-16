@@ -1,0 +1,103 @@
+﻿@model IEnumerable<PcStore.Web.Models.Product>
+
+@{
+    // Функция подбора иконци
+    string GetIcon(string categoryName)
+    {
+        var name = categoryName.ToLower();
+
+        if (name.Contains("процессоры")) return "bi-cpu";
+        if (name.Contains("видеокарты")) return "bi-gpu-card";
+        if (name.Contains("мониторы")) return "bi-display";
+        if (name.Contains("аксессуары")) return "bi-node-plus";
+
+        return "bi-question-square"; // Если ничего не подошло
+    }
+
+    <div class="products-grid">
+        @if (!Model.Any())
+        {
+            <div class="text-center text-muted w-100 mt-5">
+                <i class="bi bi-search display-1"></i>
+                <p class="mt-3">Ничего не найдено</p>
+            </div>
+        }
+        else
+        {
+            @foreach (var product in Model)
+            {
+                <div class="tech-card">
+
+                    <!-- Верх: Категория и Инфо -->
+                    <div class="card-top">
+                        <span class="card-badge">@product.Category?.Name</span>
+                        <!-- Кнопка Инфо (открывает модальное окно) -->
+                        <a href="#" class="btn-info-icon open-product-modal"
+                           data-title="@product.Name"
+                           data-sku="@product.Sku"
+                           data-cat="@product.Category?.Name"
+                           data-sup="@product.Supplier?.Name"
+                           data-price="@product.Price.ToString("C")"
+                           data-desc="@product.Description"
+                           title="Подробнее">
+                            <i class="bi bi-info-lg"></i>
+                        </a>
+                    </div>
+
+                    <!-- Иконка -->
+                    <div class="tech-icon-container">
+                        <i class="bi @GetIcon(product.Category?.Name)" style="font-size: 3.5rem; color: #333; transition: 0.3s;"></i>
+                    </div>
+
+                    <!-- Контент -->
+                    <div class="tech-content">
+                        <div class="tech-sku" title="@product.Sku">@product.Sku</div>
+                        <div class="tech-title" title="@product.Name">@product.Name</div>
+                        <div class="tech-stock @(product.QuantityInStock < 5 ? "text-danger" : "text-muted")">
+                            В наличии: @product.QuantityInStock шт.
+                        </div>
+                    </div>
+
+                    <!-- Низ -->
+                    <div class="card-bottom">
+                        <div class="tech-price">@product.Price.ToString("N2") ₽</div>
+
+                        <form asp-action="AddToCart" method="post" class="add-to-cart-form">
+                            <input type="hidden" name="productId" value="@product.Id" />
+
+                            <!-- Кастомный переключатель количества -->
+                            <div class="d-flex align-items-center justify-content-between"
+                                 style="background: #0a0a0b; border: 1px solid var(--border); border-radius: 8px; padding: 0 4px;">
+
+                                <!-- Кнопка минус -->
+                                <button type="button" class="btn btn-sm text-secondary border-0 p-0"
+                                        style="width: 24px; height: 100%;"
+                                        onclick="this.nextElementSibling.stepDown()">
+                                    <i class="bi bi-dash-lg"></i>
+                                </button>
+
+                                <!-- Цифра -->
+                                <input type="number" name="quantity"
+                                       class="form-control border-0 bg-transparent text-white text-center p-0 shadow-none"
+                                       style="height: 38px; font-weight: 600;"
+                                       value="1" min="1" max="@product.QuantityInStock" />
+
+                                <!-- Кнопка плюс -->
+                                <button type="button" class="btn btn-sm text-white border-0 p-0"
+                                        style="width: 24px; height: 100%;"
+                                        onclick="this.previousElementSibling.stepUp()">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                            </div>
+
+                            <!-- Кнопка отправки -->
+                            <button type="submit" class="btn-add">
+                                <span>В ЧЕК</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+}

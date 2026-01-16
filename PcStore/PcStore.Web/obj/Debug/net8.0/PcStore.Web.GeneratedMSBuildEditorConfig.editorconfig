@@ -56,6 +56,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmllc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[E:/Всякая всячина/Универ/3 курс/Технологии программирования/Курсовик/course-work-pc-store/PcStore/PcStore.Web/Views/Categories/_CategoryListPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmllc1xfQ2F0ZWdvcnlMaXN0UGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/Всякая всячина/Универ/3 курс/Технологии программирования/Курсовик/course-work-pc-store/PcStore/PcStore.Web/Views/Products/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -76,8 +80,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[E:/Всякая всячина/Универ/3 курс/Технологии программирования/Курсовик/course-work-pc-store/PcStore/PcStore.Web/Views/Products/Supply.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcU3VwcGx5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/Всякая всячина/Универ/3 курс/Технологии программирования/Курсовик/course-work-pc-store/PcStore/PcStore.Web/Views/Products/WriteOff.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcV3JpdGVPZmYuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Всякая всячина/Универ/3 курс/Технологии программирования/Курсовик/course-work-pc-store/PcStore/PcStore.Web/Views/Products/_ProductsTablePartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcX1Byb2R1Y3RzVGFibGVQYXJ0aWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/Всякая всячина/Универ/3 курс/Технологии программирования/Курсовик/course-work-pc-store/PcStore/PcStore.Web/Views/Reports/Index.cshtml]
@@ -94,6 +106,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [E:/Всякая всячина/Универ/3 курс/Технологии программирования/Курсовик/course-work-pc-store/PcStore/PcStore.Web/Views/Sales/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Всякая всячина/Универ/3 курс/Технологии программирования/Курсовик/course-work-pc-store/PcStore/PcStore.Web/Views/Sales/_CartPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcX0NhcnRQYXJ0aWFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Всякая всячина/Универ/3 курс/Технологии программирования/Курсовик/course-work-pc-store/PcStore/PcStore.Web/Views/Sales/_ProductListPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcX1Byb2R1Y3RMaXN0UGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/Всякая всячина/Универ/3 курс/Технологии программирования/Курсовик/course-work-pc-store/PcStore/PcStore.Web/Views/Shared/_ValidationScriptsPartial.cshtml]
@@ -118,6 +138,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [E:/Всякая всячина/Универ/3 курс/Технологии программирования/Курсовик/course-work-pc-store/PcStore/PcStore.Web/Views/Suppliers/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcGxpZXJzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Всякая всячина/Универ/3 курс/Технологии программирования/Курсовик/course-work-pc-store/PcStore/PcStore.Web/Views/Suppliers/_SupplierListPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcGxpZXJzXF9TdXBwbGllckxpc3RQYXJ0aWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/Всякая всячина/Универ/3 курс/Технологии программирования/Курсовик/course-work-pc-store/PcStore/PcStore.Web/Views/Users/Create.cshtml]
@@ -147,6 +171,10 @@ build_metadata.AdditionalFiles.CssScope =
 [E:/Всякая всячина/Универ/3 курс/Технологии программирования/Курсовик/course-work-pc-store/PcStore/PcStore.Web/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Всякая всячина/Универ/3 курс/Технологии программирования/Курсовик/course-work-pc-store/PcStore/PcStore.Web/Views/Shared/_EmptyLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9FbXB0eUxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = b-xuaks99uz4
 
 [E:/Всякая всячина/Универ/3 курс/Технологии программирования/Курсовик/course-work-pc-store/PcStore/PcStore.Web/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s

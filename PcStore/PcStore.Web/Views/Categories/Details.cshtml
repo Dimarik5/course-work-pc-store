@@ -1,30 +1,82 @@
 ﻿@model PcStore.Web.Models.Category
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.Name;
+    Layout = "_Layout";
+    
+    // Всего моделей товаров (исключая архивные)
+    var productsCount = Model.Products.Count(p => !p.IsArchived);
+
+    // Из них доступно к продаже
+    var availableModels = Model.Products.Count(p => !p.IsArchived && p.QuantityInStock > 0);
 }
 
-<h1>Details</h1>
+<div class="admin-container scrollable">
+    <div class="form-card" style="max-width: 800px;">
 
-<div>
-    <h4>Category</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+        <!-- Шапка: название и ID -->
+        <div class="d-flex justify-content-between align-items-start">
+            <h2 class="page-title m-0">@Model.Name</h2>
+            <div class="text-muted small" style="white-space: nowrap">ID: @Model.Id</div>
+        </div>
+
+        <!-- Описание (если есть) -->
+        <div class="mb-4">
+            @if (!string.IsNullOrEmpty(Model.Description))
+            {
+                <p class="text-muted fs-5" style="line-height: 1.5;">@Model.Description</p>
+            }
+            else
+            {
+                <p class="text-muted fst-italic">Описание отсутствует</p>
+            }
+        </div>
+
+        <hr class="border-secondary mb-4" />
+
+        <!-- Панель статистики -->
+        <h6 class="text-muted text-uppercase mb-3" style="font-family: 'MTSans-Condensed'">Статистика категории</h6>
+
+        <div class="row g-3 mb-4">
+            <!-- Разновидности -->
+            <div class="col-sm-6">
+                <div class="p-3 rounded h-100 d-flex flex-column justify-content-between"
+                     style="background-color: #151518; border: 1px solid var(--border);">
+                    <div class="text-muted small mb-1">Разновидностей товаров</div>
+                    <div class="d-flex align-items-end justify-content-between">
+                        <span class="text-white fw-bold" style="font-family: 'MTSans-Display'; font-size: 2rem; line-height: 1;">
+                            @productsCount
+                        </span>
+                        <a asp-controller="Products" asp-action="Index" asp-route-categoryId="@Model.Id"
+                           class="btn btn-sm btn-outline-primary" style="font-size: 0.8rem;">
+                            К списку <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Общий остаток -->
+            <div class="col-sm-6">
+                <div class="p-3 rounded h-100 d-flex flex-column justify-content-between"
+                     style="background-color: #151518; border: 1px solid var(--border);">
+                    <div class="text-muted small mb-1">Из них доступно к продаже</div>
+                    <div class="d-flex align-items-end">
+                        <span class="@(availableModels > 0 ? "text-success" : "text-danger") fw-bold"
+                              style="font-family: 'MTSans-Display'; font-size: 2rem; line-height: 1;">
+                            @availableModels
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Кнопки действий -->
+        <div class="d-flex justify-content-between mt-5">
+            <a asp-action="Index" class="btn btn-outline-secondary px-4">Назад</a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary px-4">
+                <i class="bi bi-pencil-fill me-2"></i> Редактировать
+            </a>
+        </div>
+
+    </div>
 </div>

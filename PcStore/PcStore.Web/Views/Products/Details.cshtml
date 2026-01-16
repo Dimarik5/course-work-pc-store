@@ -1,60 +1,61 @@
 ﻿@model PcStore.Web.Models.Product
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.Name;
+    Layout = "_Layout";
 }
 
-<h1>Details</h1>
+<div class="admin-container scrollable">
+    <div class="form-card" style="max-width: 800px;">
 
-<div>
-    <h4>Product</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Sku)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Sku)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.QuantityInStock)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.QuantityInStock)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Supplier)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Supplier.Name)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+        <!-- Чуть шире, чем форма -->
+        <div class="d-flex justify-content-between align-items-start mb-4">
+            <div>
+                <h6 class="text-muted mb-1" style="font-family: 'MTSans-Condensed'">Артикул: @Model.Sku</h6>
+                <h2 class="page-title m-0" style="margin-bottom: 0;">@Model.Name</h2>
+            </div>
+            <div class="text-end">
+                <div class="text-muted small" style="white-space: nowrap">ID: @Model.Id</div>
+            </div>
+        </div>
+
+        <hr class="border-secondary mb-4" />
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <dl class="row">
+                    <dt class="col-sm-4 text-muted">Категория:</dt>
+                    <dd class="col-sm-8"><span class="card-badge">@Model.Category?.Name</span></dd>
+
+                    <dt class="col-sm-4 text-muted mt-3">Поставщик:</dt>
+                    <dd class="col-sm-8 mt-3 text-white">@Model.Supplier?.Name</dd>
+
+                    <dt class="col-sm-4 text-muted mt-3">Остаток:</dt>
+                    <dd class="col-sm-8 mt-3">
+                        <span class="@(Model.QuantityInStock < 5 ? "text-danger fw-bold" : "text-success")">
+                            @Model.QuantityInStock шт.
+                        </span>
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-md-6 text-end">
+                <div class="text-muted mb-1">Цена</div>
+                <div style="font-family: 'MTSans-Display'; font-size: 2rem; color: var(--accent); line-height: 1;">
+                    @Model.Price.ToString("N2") ₽
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <h5 class="text-white border-bottom border-secondary pb-2 mb-3">Описание</h5>
+            <p class="text-light" style="opacity: 0.8; white-space: pre-line;">@(Model.Description ?? "--- ОПИСАНИЕ ОТСУТСТВУЕТ ---")</p>
+        </div>
+
+        <div class="d-flex justify-content-between mt-5">
+            <a asp-action="Index" class="btn btn-outline-secondary px-4">Назад</a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary px-4">
+                <i class="bi bi-pencil-fill me-2"></i> Редактировать
+            </a>
+        </div>
+    </div>
 </div>

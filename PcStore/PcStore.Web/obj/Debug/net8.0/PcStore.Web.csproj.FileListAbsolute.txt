@@ -273,3 +273,4 @@ E:\Всякая всячина\Универ\3 курс\Технологии пр
 E:\Всякая всячина\Универ\3 курс\Технологии программирования\Курсовик\course-work-pc-store\PcStore\PcStore.Web\bin\Debug\net8.0\runtimes\win-x86\native\libwinpthread-1.dll
 E:\Всякая всячина\Универ\3 курс\Технологии программирования\Курсовик\course-work-pc-store\PcStore\PcStore.Web\bin\Debug\net8.0\runtimes\win-x86\native\qpdf.dll
 E:\Всякая всячина\Универ\3 курс\Технологии программирования\Курсовик\course-work-pc-store\PcStore\PcStore.Web\bin\Debug\net8.0\runtimes\win-x86\native\zlib1.dll
+E:\Всякая всячина\Универ\3 курс\Технологии программирования\Курсовик\course-work-pc-store\PcStore\PcStore.Web\obj\Debug\net8.0\scopedcss\Views\Shared\_EmptyLayout.cshtml.rz.scp.css

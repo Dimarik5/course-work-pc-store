@@ -31,6 +31,7 @@ namespace PcStore.Web.Controllers
             }
 
             var category = await _context.Categories
+                .Include(c => c.Products) // Загружаем товары для статистики
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
@@ -149,6 +150,26 @@ namespace PcStore.Web.Controllers
         private bool CategoryExists(int id)
         {
             return _context.Categories.Any(e => e.Id == id);
+        }
+
+        // Поиск
+        [HttpGet]
+        public async Task<IActionResult> Search(string searchString)
+        {
+            var query = _context.Categories
+                .Where(c => !c.IsArchived) // Скрыть архивированные категории
+                .OrderBy(c => c.Name) // Показать в алфавитном порядке
+                .AsQueryable();
+
+            // ПОИСК
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(c => c.Name.Contains(searchString) || c.Description.Contains(searchString));
+            }
+
+            var categories = await query.ToListAsync();
+
+            return PartialView("_CategoryListPartial", categories);
         }
     }
 }

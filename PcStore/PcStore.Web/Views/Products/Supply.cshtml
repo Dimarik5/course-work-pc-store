@@ -1,0 +1,124 @@
+﻿@model PcStore.Web.Models.Product
+
+@{
+    ViewData["Title"] = "Поставка товара";
+    Layout = "_Layout";
+}
+
+<div class="admin-container scrollable">
+    <div class="form-card" style="max-width: 600px">
+
+        <!-- Заголовок с зелёным акцентом -->
+        <h2 class="page-title text-center mb-4" style="justify-content: center; color: var(--success)">Поставка</h2>
+
+        <!-- Информационный блок о товаре -->
+        <div class="text-center mb-4">
+            <h4 class="text-white mb-1">@Model.Name</h4>
+            <div class="small text-muted" style="font-family: 'MTSans-Condensed'">Артикул: @Model.Sku</div>
+        </div>
+
+        <!-- Текущий остаток -->
+        <div class="p-3 mb-4 rounded bg-dark border border-secondary d-flex justify-content-between align-items-center">
+            <span class="text-muted">Текущий остаток:</span>
+            <span class="text-success">
+                @Model.QuantityInStock шт.
+            </span>
+        </div>
+
+        <form asp-action="Supply" method="post" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <input type="hidden" name="id" value="@Model.Id" />
+
+            <!-- Поле количества -->
+            <div class="form-group">
+                <label class="control-label">Количество для добавления</label>
+                <div class="input-group">
+                    <input type="number" name="quantity" class="form-control" id="qtyInput" min="1" required
+                           style="font-family: 'MTSans-Display'; font-size: 1.2rem;" autofocus
+                           value="@ViewBag.Quantity"
+                           @(Model.QuantityInStock >= 10000 ? "disabled" : "") />
+                    <span class="input-group-text bg-dark text-white border-secondary">шт.</span>
+                </div>
+                <div class="form-text text-muted small mt-1">Не более @(10000 - Model.QuantityInStock)</div>
+            </div>
+
+            <!-- Поле источника -->
+            <div class="form-group">
+                <label class="control-label">Номер накладной</label>
+                <textarea name="source" class="form-control" id="srcInput" rows="2" required
+                          placeholder="Например: Накладная №123 от поставщика AMDiamond..."
+                          @(Model.QuantityInStock >= 10000 ? "disabled" : "")>@ViewBag.Source</textarea>
+            </div>
+
+            <!-- Логика блокировки -->
+            @if (Model.QuantityInStock >= 10000)
+            {
+                <!-- Блок предупреждения -->
+                <div class="alert bg-dark border-danger d-flex align-items-start text-start mb-4" role="alert">
+                    <i class="bi bi-exclamation-octagon-fill text-danger fs-3 me-3"></i>
+                    <div>
+                        <h5 class="text-danger fw-bold mb-1">Действие невозможно</h5>
+                        <p class="mb-2 small text-muted">
+                            Этот товар находится на складе в избытке.
+                            <br />Принять на склад можно только товары, количество которых не превышает 10&nbsp;000 шт.
+                        </p>
+                        <p class="mb-0 small">
+                            Пожалуйста, проведите <a asp-action="WriteOff" asp-route-id="@Model.Id" class="text-warning text-decoration-underline">процедуру оформления списания</a>
+                            или оформите <a asp-controller="Sales" asp-action="Index" class="text-warning text-decoration-underline">продажу</a> остатков.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-5">
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4">Отмена</a>
+                    <!-- Кнопка отключена -->
+                    <button class="btn btn-secondary px-4" disabled>Принять на склад</button>
+                </div>
+            }
+            else
+            {
+                <!-- Всё чисто, можно поставлять -->
+                <div class="d-flex justify-content-between mt-5">
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4">Отмена</a>
+                    <button type="submit" class="btn btn-success px-4">Принять на склад</button>
+                </div>
+            }
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const qtyInput = document.getElementById('qtyInput');
+            const srcInput = document.getElementById('srcInput');
+
+            if (qtyInput && srcInput) {
+
+                // --- ЛОГИКА ФОКУСА ПРИ ЗАГРУЗКЕ ---
+                // Если количество заполнено, а источник пустой
+                if (qtyInput.value && !srcInput.value) {
+                    // Ставим курсор в причину
+                    srcInput.focus();
+                }
+                // Иначе сработает стандартный атрибут autofocus на поле количества
+
+
+                // --- ЛОГИКА ПЕРЕХОДА ПО ENTER ---
+                qtyInput.addEventListener('keydown', function(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        if (qtyInput.value) {
+                            srcInput.focus();
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+}

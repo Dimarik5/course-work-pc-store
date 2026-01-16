@@ -17,7 +17,12 @@ namespace PcStore.Web.Models
 
         // Контакты поставщика
         [Display(Name = "Контактная информация")]
+        [Required(ErrorMessage = "Введите контактную информацию поставщика")]
         public string ContactInfo { get; set; }
+
+        // "Удалён" ли поставщик
+        [Display(Name = "В архиве")]
+        public bool IsArchived { get; set; } = false; // По умолчанию поставщик активен
 
         // --- СВЯЗИ ---
 

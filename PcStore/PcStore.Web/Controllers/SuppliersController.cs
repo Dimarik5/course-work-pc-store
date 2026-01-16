@@ -150,5 +150,25 @@ namespace PcStore.Web.Controllers
         {
             return _context.Suppliers.Any(e => e.Id == id);
         }
+
+        // Поиск
+        [HttpGet]
+        public async Task<IActionResult> Search(string searchString)
+        {
+            var query = _context.Suppliers
+                .Where(s => !s.IsArchived) // Скрыть архивированных поставщиков
+                .OrderBy(s => s.Name) // Показать в алфавитном порядке
+                .AsQueryable();
+
+            // ПОИСК
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(c => c.Name.Contains(searchString) || c.ContactInfo.Contains(searchString));
+            }
+
+            var suppliers = await query.ToListAsync();
+
+            return PartialView("_SupplierListPartial", suppliers);
+        }
     }
 }

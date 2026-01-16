@@ -1,35 +1,41 @@
 ﻿@model PcStore.Web.Models.LoginViewModel
 
 @{
-    ViewData["Title"] = "Вход в систему";
+    ViewData["Title"] = "Вход";
+    Layout = "_EmptyLayout";
 }
 
-<div class="row justify-content-center mt-5">
-    <div class="col-md-4">
-        <div class="card shadow">
-            <div class="card-body">
-                <h3 class="text-center mb-4">Вход</h3>
-                <form asp-action="Login">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="auth-overlay">
 
-                    <div class="mb-3">
-                        <label asp-for="Login" class="form-label"></label>
-                        <input asp-for="Login" class="form-control" />
-                        <span asp-validation-for="Login" class="text-danger"></span>
-                    </div>
+    <!-- Логотип -->
+    <div class="auth-logo">
+        PC<span>S</span>
+    </div>
 
-                    <div class="mb-3">
-                        <label asp-for="Password" class="form-label"></label>
-                        <input asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-
-                    <div class="d-grid">
-                        <input type="submit" value="Войти" class="btn btn-primary" />
-                    </div>
-                </form>
-            </div>
+    <!-- Карточка -->
+    <div class="auth-card">
+        <div class="auth-header">
+            <i class="bi bi-box-arrow-in-right auth-icon"></i>
+            <h2>ВХОД</h2>
         </div>
+
+        <form asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3 small"></div>
+
+            <!-- Логин -->
+            <div class="input-icon-group">
+                <input asp-for="Login" class="form-control" placeholder="Логин" autocomplete="off" autofocus />
+                <i class="bi bi-person-fill"></i>
+            </div>
+
+            <!-- Пароль -->
+            <div class="input-icon-group">
+                <input asp-for="Password" class="form-control" type="password" placeholder="Пароль" />
+                <i class="bi bi-lock-fill"></i>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-auth">ВОЙТИ В СИСТЕМУ</button>
+        </form>
     </div>
 </div>
 

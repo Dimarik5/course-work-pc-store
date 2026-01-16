@@ -39,6 +39,10 @@ namespace PcStore.Web.Models
         [Range(0, 10000, ErrorMessage = "Недопустимое количество")]
         public int QuantityInStock { get; set; }
 
+        // "Удалён" ли товар
+        [Display(Name = "В архиве")]
+        public bool IsArchived { get; set; } = false; // По умолчанию товар активен
+
         // --- СВЯЗИ ---
 
         // Внешний ключ на категорию

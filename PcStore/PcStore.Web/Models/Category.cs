@@ -17,7 +17,11 @@ namespace PcStore.Web.Models
 
         // Описание категории
         [Display(Name = "Описание")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
+
+        // "Удалена" ли категория
+        [Display(Name = "В архиве")]
+        public bool IsArchived { get; set; } = false; // По умолчанию категория активна
 
         // --- СВЯЗИ ---
 

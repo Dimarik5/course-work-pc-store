@@ -1,22 +1,1119 @@
-html {
-  font-size: 14px;
+/* --- ПОДКЛЮЧЕНИЕ ШРИФТОВ --- */
+
+/* 1. Семейство CONDENSED (Для основного текста) */
+
+/* Light (Тонкий) - вес 300 */
+@font-face {
+    font-family: 'MTSans-Condensed';
+    src: url('../fonts/MTSans-LightCondensed.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+/* Regular (Обычный) - вес 400 */
+@font-face {
+    font-family: 'MTSans-Condensed';
+    src: url('../fonts/MTSans-RegularCondensed.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+/* Bold (Жирный) - вес 700 */
+@font-face {
+    font-family: 'MTSans-Condensed';
+    src: url('../fonts/MTSans-BoldCondensed.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+/* Black (Очень жирный) - вес 900 */
+@font-face {
+    font-family: 'MTSans-Condensed';
+    src: url('../fonts/MTSans-BlackCondensed.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+/* 2. Семейство DISPLAY/HEADER (Для заголовков) */
+
+/* Обычный Bold (не сжатый) */
+@font-face {
+    font-family: 'MTSans-Display';
+    src: url('../fonts/MTSans-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* Black Extended (Широкий и жирный) - для логотипа и супер-заголовков */
+@font-face {
+    font-family: 'MTSans-Extended';
+    src: url('../fonts/MTSans-BlackExtended.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+:root {
+    --bg-main: radial-gradient(circle at 10% 20%, rgba(255, 102, 0, 0.05) 0%, transparent 50%);
+    --bg-dark: #0a0a0b;
+    --bg-panel: rgba(20, 20, 23, 0.7); /* Полупрозрачный */
+    --accent: #ff6600;
+    --danger: #dc3545;
+    --success: #19b36c;
+    --accent-glow: rgba(255, 102, 0, 0.4);
+    --text-main: #ffffff;
+    --text-sec: #8b8b93;
+    --text-muted: #8b8b93;
+    --border: rgba(255, 255, 255, 0.08);
+    --glass: blur(20px) saturate(180%);
+    letter-spacing: 0.02em;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 body {
-  margin-bottom: 60px;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'MTSans-Condensed', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden; /* Убираем скролл у всего окна */
+}
+
+
+
+
+
+/* --- ГЛОБАЛЬНАЯ РАЗМЕТКА --- */
+.app-wrapper {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* Контейнер для контента (куда будут грузиться страницы) */
+.app-main-content {
+    flex-grow: 1;
+    overflow-y: hidden; /* Скроллится только контент, меню стоит на месте */
+    position: relative;
+    background: var(--bg-main);
+}
+
+/* Исправляем Сайдбар, чтобы он был фиксированной ширины */
+.pos-sidebar {
+    width: 80px;
+    height: 100vh;
+    flex-shrink: 0;
+}
+
+
+
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* ПЕРЕКРАШИВАЕМ СИНИЙ ТЕКСТ В ОРАНЖЕВЫЙ */
+.text-primary {
+    color: var(--accent) !important;
+}
+
+.text-success {
+    color: var(--success) !important;
+}
+
+
+/* Перекрашиваем основную кнопку */
+.btn-primary {
+    background-color: var(--accent) !important;
+    border-color: var(--accent) !important; /* Важно покрасить и рамку */
+    color: #fff !important;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+    background-color: var(--accent-hover) !important;
+    border-color: var(--accent-hover) !important;
+    box-shadow: 0 0 15px rgba(255, 102, 0, 0.4) !important;
+}
+
+/* Также поправим outline-кнопки, если где-то используются */
+.btn-outline-primary {
+    color: var(--accent) !important;
+    border-color: var(--accent) !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--accent) !important;
+    color: #fff !important;
+}
+
+.btn-secondary {
+    opacity: 0.2 !important;
+}
+
+
+/* Заголовки */
+h1, h2, h3, h4, h5 {
+    color: #fff;
+    /* Используем широкий шрифт для заголовков */
+    font-family: 'MTSans-Display', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase; /* Опционально: заголовки капсом смотрятся круче */
+    letter-spacing: 0.1em;
+}
+
+/* --- ЛЕЙАУТ POS-ТЕРМИНАЛА (CSS Grid) --- */
+.pos-layout {
+    display: grid;
+    grid-template-columns: 80px 1fr 400px; /* Меню | Витрина | Чек */
+    height: 100vh;
+    width: 100vw;
+    animation: fadeIn 0.5s ease;
+}
+
+/* 1. БОКОВОЕ МЕНЮ (Слева) */
+.pos-sidebar {
+    background: #111;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 45px;
+    z-index: 20;
+}
+
+.sidebar-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-sec);
+    font-size: 1.5rem;
+    transition: 0.3s;
+    margin-bottom: 15px;
+    text-decoration: none;
+}
+
+.sidebar-icon:hover, .sidebar-icon.active {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+/* 2. ВИТРИНА (Центр) */
+.pos-catalog {
+    padding: 40px 30px 0;
+    overflow: hidden; /* Запрещаем скролл всему контейнеру */
+    display: flex; /* Включаем Flexbox */
+    flex-direction: column; /* Выстраиваем элементы в столбик */
+    height: 100%; /* Растягиваем на всю высоту */
+    position: relative;
+}
+
+/* Поиск */
+.search-bar {
+    background: #1a1a1d;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    height: 45px;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    flex-shrink: 0;
+}
+
+.search-input {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    width: 100%;
+    outline: none;
+}
+
+/* Странно, но исправляет овальный спиннер */
+.spinner-border-sm {
+    width: 1px;
+    height: 1px;
+    min-width: 1rem;
+    min-height: 1rem;
+}
+
+/* Размытие для блока товаров в терминале */
+.fade-wrapper {
+    mask-image: linear-gradient(
+        to bottom,
+        transparent 0px,
+        black 30px,
+        black calc(100% - 30px),
+        transparent 100%
+    );
+    mask-repeat: no-repeat;
+}
+
+/* Сетка товаров */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 30px;
+}
+
+/* --- ОБНОВЛЕННАЯ КАРТОЧКА ТОВАРА --- */
+.tech-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    position: relative;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 400px; /* Чуть увеличили высоту для инпута */
+    overflow: hidden;
+}
+
+.tech-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    box-shadow: 0 10px 40px -10px var(--accent-glow);
+    background: #1a1a1d;
+}
+
+/* Верхняя часть карточки (Бейдж и Инфо) */
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    z-index: 2;
+}
+
+.card-badge {
+    background: rgba(255,255,255,0.1);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-sec);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.btn-info-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-sec);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.2s;
+    text-decoration: none;
+}
+
+.btn-info-icon:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(255, 102, 0, 0.1);
+}
+
+/* Контейнер для иконки - фиксированная высота */
+.tech-icon-container {
+    height: 80px; /* Дадим ей больше места */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    flex-shrink: 0; /* Запрещаем сжиматься */
+}
+
+/* Текстовый блок - занимает всё свободное место */
+.tech-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-height: 0;
+    margin-bottom: 10px;
+}
+
+/* Артикул */
+.tech-sku {
+    font-family: 'MTSans-Condensed', monospace;
+    font-size: 0.85rem;
+    color: var(--text-sec);
+    opacity: 0.8;
+    margin-bottom: 2px;
+    white-space: nowrap; /* Запрет переноса */
+    overflow: hidden; /* Обрезаем */
+    text-overflow: ellipsis; /* Троеточие */
+}
+
+/* Название товара */
+.tech-title {
+    font-family: 'MTSans-Display', sans-serif; /* Читабельный заголовок */
+    font-weight: 600;
+    font-size: 1.1rem;
+    line-height: 1.2;
+    color: white;
+    /* Ограничение в 3 строки, чтобы не вылезало */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+/* Нижняя часть (Цена + Кнопки) - прибита к низу */
+.card-bottom {
+    margin-top: auto; /* Волшебное свойство flexbox */
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0; /* Не сжимать */
+}
+
+.tech-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'MTSans-Display', sans-serif;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+}
+
+/* Кастомный инпут количества */
+.add-to-cart-form {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* 1 часть инпут, 2 части кнопка */
+    gap: 8px;
+}
+
+.qty-input {
+    background: #000;
+    border: 1px solid var(--border);
+    color: white;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    width: 100%;
+    outline: none;
+    transition: 0.2s;
+}
+
+.qty-input:focus {
+    border-color: var(--accent);
+}
+
+.btn-add {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    background: white;
+    color: black;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 0; /* Сброс отступа */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-add:hover {
+   background: var(--accent);
+    color: white;
+}
+
+/* 3. ЧЕК (Справа - Glassmorphism) */
+.pos-cart {
+    background: rgba(15, 15, 20, 0.85);
+    backdrop-filter: var(--glass);
+    -webkit-backdrop-filter: var(--glass);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding: 30px;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+}
+
+/* Заголовок о чеке */
+.pos-cart h2 {
+    font-family: 'MTSans-Display', sans-serif !important;
+}
+
+.cart-items {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin: 20px -20px; /* Чтобы скроллбар был скраю */
+    padding: 0 20px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.03);
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+}
+
+/* Анимация только для новых/измененных элементов */
+.cart-item.slide-in {
+    animation: slideIn 0.3s ease;
+}
+
+.cart-item:hover {
+    border-color: var(--border);
+    background: rgba(255,255,255,0.05);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.cart-total-panel {
+    background: #1a1a1d;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+}
+
+.total-price {
+    font-size: 1.8rem;
+    font-family: 'MTSans-Display', sans-serif;
+    font-weight: 700;
+    color: white;
+    text-align: right;
+}
+
+.btn-checkout {
+    background: linear-gradient(135deg, var(--accent), #ff3300);
+    color: white;
+    width: 100%;
+    padding: 20px;
+    border-radius: 12px;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 10px 30px var(--accent-glow);
+    transition: 0.3s;
+}
+
+.btn-checkout:hover {
+    transform: scale(1.02);
+    box-shadow: 0 15px 40px var(--accent-glow);
+}
+
+/* Скроллбары */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}
+
+::-webkit-scrollbar-corner {
+    background: black;
+}
+
+::-webkit-scrollbar-track {
+    background: black;
+    border-radius: 3px;
+}
+
+
+
+/* Для страниц входа и блокировки */
+.auth-overlay {
+    max-width: 100%;
+    overflow: auto;
+    margin: 0 auto;
+    height: 100%; /* Строго высота родителя */
+    display: flex; /* Включаем Flexbox */
+    flex-direction: column; /* Элементы друг под другом */
+    padding: 40px 30px; /* Отступы от краев экрана */
+}
+
+/* --- АДМИН-ПАНЕЛЬ --- */
+
+/* Контейнер для всех админских страниц */
+.admin-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 100%; /* Строго высота родителя */
+    display: flex; /* Включаем Flexbox */
+    flex-direction: column; /* Элементы друг под другом */
+    padding: 40px 30px; /* Отступы от краев экрана */
+    overflow: hidden; /* Запрещаем скролл самой страницы */
+    animation: fadeIn 0.5s ease;
+}
+
+.admin-container.scrollable {
+    max-width: 100%;
+    overflow: auto;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.page-title {
+    font-family: 'MTSans-Extended', sans-serif;
+    text-transform: uppercase;
+    color: white;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Панель инструментов (Поиск + Кнопки) */
+.toolbar {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* --- СТИЛИЗАЦИЯ ТАБЛИЦЫ --- */
+
+.table-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    
+    /* Растягиваем карточку */
+    flex-grow: 1;
+    min-height: 0; 
+    
+    /* Внутри карточки прячем всё лишнее */
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+}
+
+/* Обертка, которая скроллится во все стороны */
+.table-responsive-custom {
+    overflow: auto; /* Включаем оба скролла */
+    height: 100%;
+    width: 100%;
+}
+
+.table {
+    margin-bottom: 0;
+    vertical-align: middle;
+    width: 100%;
+    /* Если экран узкий, таблица не сожмется, а появится гориз. скролл */
+    min-width: 1000px; 
+    border-collapse: separate; /* Нужно для sticky */
+    border-spacing: 0;
+}
+
+/* --- ШАПКА (Липкая) --- */
+.table thead th {
+    background-color: #252529;
+    border-bottom: 2px solid var(--border-color);
+    color: #ffffff;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 15px;
+    letter-spacing: 0.5px;
+    border-top: none;
+
+    /* Закрепляем сверху */
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.table td {
+    padding: 15px;
+    color: white;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+/* --- СКРОЛЛБАР --- */
+
+.table-responsive-custom::-webkit-scrollbar {
+    width: 8px;  /* Вертикальный */
+    height: 8px; /* Горизонтальный */
+}
+
+/* Трек скроллбара */
+.table-responsive-custom::-webkit-scrollbar-track {
+    background: #252529;
+}
+
+/* В местах пересечения скроллов (правый нижний угол) */
+.table-responsive-custom::-webkit-scrollbar-corner {
+    background: #252529;
+}
+
+.table-responsive-custom::-webkit-scrollbar-thumb {
+    background-color: #3e3e42;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.table-responsive-custom::-webkit-scrollbar-thumb:hover {
+    background-color: var(--accent);
+}
+
+/* Кнопки действий в таблице */
+.action-btn {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: var(--text-sec);
+    transition: 0.2s;
+    background: rgba(255,255,255,0.05);
+    text-decoration: none;
+}
+
+.action-btn:hover {
+    color: white;
+    background: var(--accent);
+}
+
+.action-btn.success:hover {
+    color: white !important;
+    background: var(--success) !important;
+}
+
+.action-btn.danger:hover {
+    color: white !important;
+    background: var(--danger);
+}
+
+/* --- СТИЛИ ДЛЯ ФОРМ (Create/Edit) --- */
+.form-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    max-width: 700px; /* Узкая форма по центру */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    width: 100%; /* Чтобы не схлопывалась */
+    margin: auto; /* Волшебство Flexbox: центрует по вертикали и горизонтали */
+    flex-shrink: 0; /* Запрещаем сжимать форму, если экран маленький -> появится скролл */
+    /* ---------------- */
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.control-label {
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    display: block;
+    font-size: 0.9rem;
+}
+
+/* Кастомизация Select (выпадающий список) */
+select.form-control {
+    background-image: url("data:image/svg+xml,..."); /* Можно добавить стрелочку, но пока оставим стандарт */
+    appearance: none; /* Убираем стандартный стиль браузера */
+}
+
+
+/* Убираем стандартные стрелки input type=number */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield; /* Для Firefox */
+}
+
+
+/* --- КРАСИВЫЙ ВЫПАДАЮЩИЙ СПИСОК --- */
+
+/* Контейнер, который заменит стандартный селект */
+.select-wrapper {
+    position: relative;
+    font-family: 'MTSans-Condensed', sans-serif;
+    min-width: 200px;
+    flex-grow: 1;
+}
+
+/* Сама кнопка списка (видимая часть) */
+.select-selected {
+    background-color: #1a1a1d;
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 10px 20px;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s;
+    height: 45px;
+}
+
+/* Стрелочка */
+.select-selected:after {
+    content: "";
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    border-color: var(--text-muted) transparent transparent transparent;
+    margin-top: 5px;
+}
+
+/* Состояние: Открыт */
+.select-selected.select-arrow-active:after {
+    border-color: transparent transparent var(--accent) transparent;
+    margin-top: -5px;
+}
+
+.select-selected.select-arrow-active {
+    border-color: var(--accent);
+    border-radius: 20px 20px 0 0; /* Скругляем только верх */
+    background-color: var(--bg-hover);
+}
+
+/* Выпадающий список (контейнер опций) */
+.select-items {
+    position: absolute;
+    background-color: #1a1a1d;
+    border: 1px solid var(--accent);
+    border-top: none;
+    border-radius: 0 0 20px 20px;
+    z-index: 999;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    
+    /* Анимация появления */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+}
+
+.select-items.select-show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Элемент списка */
+.select-items div {
+    color: var(--text-main);
+    padding: 10px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.select-items div:hover, .same-as-selected {
+    background-color: var(--accent);
+    color: white;
+}
+
+/* Кастомизация скроллбара внутри списка */
+.select-items::-webkit-scrollbar {
+    width: 6px;
+}
+.select-items::-webkit-scrollbar-thumb {
+    background: #333; border-radius: 3px;
+
+}
+.select-items::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}
+
+
+
+/* --- СПРАВОЧНИКИ (Категории и Поставщики) --- */
+
+.categories-grid,
+.suppliers-grid {
+    display: grid;
+    /* Адаптивная сетка: карточки не меньше 350px, растягиваются на всю ширину */
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+    padding: 30px;
+}
+
+.category-card,
+.supplier-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 180px; /* Чтобы карточки были одной высоты визуально */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Эффект свечения при наведении */
+.category-card:hover,
+.supplier-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    box-shadow: 0 10px 30px -10px var(--accent-glow);
+    background: #1e1e22;
+}
+
+/* Декоративная полоска слева */
+.category-card::before,
+.supplier-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--border);
+    transition: 0.3s;
+}
+
+.category-card:hover::before,
+.supplier-card:hover::before {
+    background: var(--accent);
+}
+
+.category-title,
+.supplier-title {
+    font-family: 'MTSans-Display', sans-serif;
+    font-size: 1.4rem;
+    color: white;
+    margin-bottom: 10px;
+    padding-left: 15px; /* Отступ от полоски */
+}
+
+.category-desc,
+.supplier-desc {
+    font-family: 'Inter', sans-serif; /* Или MTSans-Condensed */
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    flex-grow: 1; /* Растягиваем, чтобы кнопки были внизу */
+    padding-left: 15px;
+    margin-bottom: 20px;
+}
+
+.category-actions,
+.supplier-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+
+
+/* --- СТРАНИЦЫ АВТОРИЗАЦИИ (Login / Access Denied) --- */
+
+/* Полноэкранная обертка, перекрывающая всё */
+.auth-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-dark);
+    /* Красивый темный градиент на фоне */
+    background-image: radial-gradient(circle at 50% 30%, #1a1a20 0%, #0a0a0b 70%);
+    z-index: 9999; /* Поверх всего */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.8s ease;
+}
+
+/* Огромный логотип PCS */
+.auth-logo {
+    font-family: 'MTSans-Extended', sans-serif;
+    font-size: 8rem; /* Очень большой */
+    font-weight: 900;
+    line-height: 1;
+    color: var(--text-main);
+    margin-bottom: 40px;
+    text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    position: relative;
+}
+
+/* Оранжевая точка или акцент в логотипе */
+.auth-logo span {
+    color: var(--accent);
+    text-shadow: 0 0 40px var(--accent-glow);
+}
+
+
+/* Обычный логотип PCS */
+.logo {
+    color: var(--text-main);
+}
+
+/* Оранжевая точка или акцент в логотипе */
+.logo span {
+    color: var(--accent);
+    text-shadow: 0 0 4px var(--accent-glow);
+}
+
+
+/* Карточка входа */
+.auth-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 50px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
+}
+
+.auth-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+}
+
+.auth-header h2 {
+    font-family: 'MTSans-Extended', sans-serif;
+    font-size: 2rem;
+    margin: 0;
+    color: var(--text-main);
+    letter-spacing: 2px;
+}
+
+.auth-icon {
+    font-size: 2rem;
+    color: var(--accent);
+}
+
+/* Поля ввода с иконками */
+.input-icon-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-icon-group i {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    transition: 0.3s;
+}
+
+.input-icon-group input {
+    padding-left: 55px; /* Место под иконку */
+    height: 55px;
+    background: #0f0f10;
+    border-color: var(--border);
+    font-size: 1.1rem;
+    border-radius: 12px;
+}
+
+.input-icon-group input:focus + i {
+    color: var(--accent);
+}
+
+/* Кнопка входа */
+.btn-auth {
+    width: 100%;
+    height: 55px;
+    font-size: 1.2rem;
+    font-family: 'MTSans-Display', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
+    background: var(--accent);
+    color: white;
+    border-radius: 12px;
+    font-weight: 700;
+}
+
+.btn-auth:hover {
+    box-shadow: 0 0 25px var(--accent-glow);
+}
+
+/* --- СТИЛИ ДЛЯ ACCESS DENIED --- */
+.denied-icon-wrapper {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(247, 90, 104, 0.1);
+    border: 2px solid var(--danger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    box-shadow: 0 0 40px rgba(247, 90, 104, 0.2);
 }

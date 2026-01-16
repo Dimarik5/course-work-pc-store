@@ -1,117 +1,298 @@
 ﻿@model IEnumerable<PcStore.Web.Models.Product>
 @{
-    ViewData["Title"] = "Терминал продажи";
+    Layout = "_Layout";
+    ViewData["Title"] = "Терминал";
     var cart = ViewBag.Cart as List<PcStore.Web.Models.CartItem>;
+    var cartTotal = (decimal)ViewBag.GrandTotal;
 }
 
-<div class="container-fluid">
-    <div class="row">
-        <!-- Слева: каталог товаров -->
-        <div class="col-md-8">
-            <h3>Каталог товаров</h3>
+<style>
+    .app-main-content {
+        overflow: hidden !important;
+    }
+</style>
 
-            <form asp-action="Index" method="get" class="mb-3">
-                <div class="input-group">
-                    <input type="text" name="searchString" class="form-control" placeholder="Поиск по названию или артикулу..." />
-                    <button type="submit" class="btn btn-outline-primary">Найти</button>
-                    <a asp-action="Index" class="btn btn-outline-secondary">Сброс</a>
+<div class="pos-layout" style="grid-template-columns: 1fr 400px; width: 100%; height: 100%;">
+    <main class="pos-catalog">
+
+        <!-- Заголовок -->
+        <h1 class="page-title">
+            <i class="bi bi-cart4 text-primary"></i> Терминал
+        </h1>
+        
+        <!-- Блок фильтров и поиска -->
+        <div class="d-flex flex-wrap gap-2">
+            <!-- Поиск -->
+            <div class="search-bar flex-grow-1 mb-0" style="min-width: 300px">
+                <i class="bi bi-search text-muted me-3"></i>
+                <input type="text" id="adminSearchInput" class="search-input" autofocus
+                       placeholder="Название/артикул товара..." value="@Context.Request.Query["searchString"]" autocomplete="off" />
+                <!-- Спиннер -->
+                <div id="admin-spinner" class="spinner-border text-primary spinner-border-sm ms-2" role="status" style="display: none;">
+                    <span class="visually-hidden">Loading...</span>
                 </div>
-            </form>
+            </div>
 
-            <div class="row">
-                @foreach (var product in Model)
-                {
-                    <div class="col-md-6 col-lg-4 mb-3">
-                        <div class="card h-100 shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title">@product.Name</h5>
-                                <p class="card-text text-muted small">@product.Category?.Name | Остаток: @product.QuantityInStock</p>
-                                <h4 class="text-primary">@product.Price.ToString("C")</h4> <!-- "C" меняет формат отображения цены и валюту в зависимости от языка пользователя -->
-                                <!-- Форма добавления в "корзину" -->
-                                <form asp-action="AddToCart" method="post" class="mt-3">
-                                    <input type="hidden" name="productId" value="@product.Id" />
-                                    <div class="input-group">
-                                        <input type="number" name="quantity" class="form-control" value="1" min="1" max="@product.QuantityInStock" />
-                                        <button type="submit" class="btn btn-success">В чек +</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+            <!-- Фильтры -->
+            <select id="filterCategory" class="custom-select" asp-items="ViewBag.CategoryId">
+                <option value="">Все категории</option>
+            </select>
+
+            <select id="filterSupplier" class="custom-select" asp-items="ViewBag.SupplierId">
+                <option value="">Все поставщики</option>
+            </select>
+
+            <!-- Сортировка -->
+            <select id="sortOrder" class="custom-select" style="min-width: 160px;">
+                <option value="">Недавно добавленные</option>
+                <option value="price_asc">Подешевле</option>
+                <option value="price_desc">Подороже</option>
+                <option value="qty_asc">С меньшим остатком</option>
+                <option value="qty_desc">С большим остатком</option>
+            </select>
+        </div>
+
+        <!-- Сетка товаров -->
+        <div class="fade-wrapper" id="products-container" style="flex-grow: 1; overflow-y: auto; min-height: 0;">
+            <partial name="_ProductListPartial" />
+        </div>
+        
+    </main>
+
+
+    <!-- Чек -->
+    <div id="cart-container" style="height: 100vh; width: 100%;">
+        <partial name="_CartPartial" />
+    </div>
+</div>
+
+<!-- Глобальное модальное окно -->
+<div class="modal fade" id="globalProductModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content shadow-lg" style="background: #1a1a1d; border: 1px solid var(--border);">
+            <div class="modal-header border-secondary">
+                <div>
+                    <h5 class="modal-title text-white" id="modalTitle"></h5>
+                    <div class="text-muted small mt-1">Арт: <span id="modalSku"></span></div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-light">
+                <div class="row">
+                    <div class="col-md-4 border-end border-secondary">
+                        <p class="text-muted mb-1">Категория</p>
+                        <p class="fs-5" id="modalCat"></p>
+
+                        <p class="text-muted mb-1 mt-3">Поставщик</p>
+                        <p class="fs-5" id="modalSup"></p>
+
+                        <p class="text-muted mb-1 mt-3">Цена</p>
+                        <p class="tech-price" id="modalPrice"></p>
                     </div>
-                }
+                    <div class="col-md-8 ps-4">
+                        <h6 class="text-uppercase text-muted mb-3">Описание</h6>
+                        <p style="white-space: pre-line; line-height: 1.6; color: #ccc;" id="modalDesc"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-secondary">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- Справа: текущий чек -->
-        <div class="col-md-4">
-            <div class="card border-primary mb-3" style="position: sticky; top: 20px;">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Текущий чек</h4>
-                </div>
-                <div class="card-body">
-                    @if (cart != null && cart.Any())
-                    {
-                        <table class="table table-sm table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Товар</th>
-                                    <th>Количество</th>
-                                    <th>Сумма</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in cart)
-                                {
-                                    <tr>
-                                        <td>@item.ProductName</td>
-                                        <td>@item.Quantity</td>
-                                        <td>@item.Total.ToString("C")</td>
-                                    </tr>
+@section Scripts {
+    <script>
+        // Логика "корзины"
+        function setupAjaxForms() {
+            var forms = document.querySelectorAll('.add-to-cart-form, .ajax-form');
+
+            forms.forEach(function (form) {
+                var newForm = form.cloneNode(true);
+                form.parentNode.replaceChild(newForm, form);
+
+                newForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    var url = newForm.getAttribute('action');
+                    if (!url) url = newForm.action;
+
+                    if (newForm.getAttribute('asp-action')) {
+                    }
+
+                    var formData = new FormData(newForm);
+
+                    fetch(url, {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById('cart-container').innerHTML = html;
+                        setupAjaxForms();
+                    })
+                    .catch(error => console.error('Ошибка:', error));
+                });
+            });
+        }
+
+        // Живой поиск и фильтры
+        function initSearchLogic() {
+            const searchInput = document.getElementById('adminSearchInput');
+            const filterCategory = document.getElementById('filterCategory');
+            const filterSupplier = document.getElementById('filterSupplier');
+            const sortOrder = document.getElementById('sortOrder');
+
+            const productsContainer = document.getElementById('products-container');
+            const spinner = document.getElementById('admin-spinner');
+
+            let timeout = null;
+
+            function loadData() {
+                if (!searchInput) return;
+
+                const query = searchInput.value;
+                const cat = filterCategory.value;
+                const sup = filterSupplier.value;
+                const sort = sortOrder.value;
+
+                if (spinner) spinner.style.display = 'block';
+
+                const url = `@Url.Action("SearchProducts", "Sales")?searchString=${encodeURIComponent(query)}&categoryId=${cat}&supplierId=${sup}&sortOrder=${sort}`;
+
+                fetch(url)
+                    .then(response => response.text())
+                    .then(html => {
+                        productsContainer.innerHTML = html;
+                        if (spinner) spinner.style.display = 'none';
+                        setupAjaxForms();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        if (spinner) spinner.style.display = 'none';
+                    });
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener('input', function () {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(loadData, 300);
+                });
+            }
+
+            if (filterCategory) filterCategory.addEventListener('change', loadData);
+            if (filterSupplier) filterSupplier.addEventListener('change', loadData);
+            if (sortOrder) sortOrder.addEventListener('change', loadData);
+
+        }
+
+
+        // Кастомные фильтры
+        function initCustomSelects() {
+            var x, i, j, l, ll, selElmnt, a, b, c;
+            x = document.getElementsByClassName("custom-select");
+            l = x.length;
+            for (i = 0; i < l; i++) {
+                selElmnt = x[i];
+                if (selElmnt.nextElementSibling && selElmnt.nextElementSibling.classList.contains("select-wrapper")) continue;
+
+                var wrapper = document.createElement("DIV");
+                wrapper.setAttribute("class", "select-wrapper");
+                selElmnt.parentNode.insertBefore(wrapper, selElmnt);
+                wrapper.appendChild(selElmnt);
+
+                a = document.createElement("DIV");
+                a.setAttribute("class", "select-selected");
+                a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+                wrapper.appendChild(a);
+
+                b = document.createElement("DIV");
+                b.setAttribute("class", "select-items");
+                ll = selElmnt.length;
+                for (j = 0; j < ll; j++) {
+                    c = document.createElement("DIV");
+                    c.innerHTML = selElmnt.options[j].innerHTML;
+                    if (selElmnt.options[j].selected) c.setAttribute("class", "same-as-selected");
+
+                    c.addEventListener("click", function(e) {
+                        var s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+                        var h = this.parentNode.previousSibling;
+                        for (var i = 0; i < s.length; i++) {
+                            if (s.options[i].innerHTML == this.innerHTML) {
+                                s.selectedIndex = i;
+                                h.innerHTML = this.innerHTML;
+                                var y = this.parentNode.getElementsByClassName("same-as-selected");
+                                for (var k = 0; k < y.length; k++) {
+                                    y[k].removeAttribute("class");
                                 }
-                            </tbody>
-                        </table>
-
-                        <hr />
-
-                        <!-- Блок итогов -->
-                        <div class="d-flex justify-content-between">
-                            <span>Подытог:</span>
-                            <span class="fw-bold">@(((decimal)ViewBag.SubTotal).ToString("C"))</span>
-                        </div>
-
-                        @if (ViewBag.DiscountAmount > 0)
-                        {
-                            <div class="d-flex justify-content-between text-success">
-                                <span>Скидка (@ViewBag.DiscountPercent%):</span>
-                                <span class="fw-bold">-@(((decimal)ViewBag.DiscountAmount).ToString("C"))</span>
-                            </div>
+                                this.setAttribute("class", "same-as-selected");
+                                s.dispatchEvent(new Event('change')); // <-- ВАЖНО для фильтрации
+                                break;
+                            }
                         }
+                        h.click();
+                    });
+                    b.appendChild(c);
+                }
+                wrapper.appendChild(b);
+                a.addEventListener("click", function(e) {
+                    e.stopPropagation();
+                    closeAllSelect(this);
+                    this.nextSibling.classList.toggle("select-show");
+                    this.classList.toggle("select-arrow-active");
+                });
+                selElmnt.style.display = "none";
+            }
+        }
 
-                        <div class="d-flex justify-content-between mt-2">
-                            <h3>ИТОГО:</h3>
-                            <h3 class="text-primary">@(((decimal)ViewBag.GrandTotal).ToString("C"))</h3>
-                        </div>
+        function closeAllSelect(elmnt) {
+            var x, y, i, xl, yl, arrNo = [];
+            x = document.getElementsByClassName("select-items");
+            y = document.getElementsByClassName("select-selected");
+            xl = x.length;
+            yl = y.length;
+            for (i = 0; i < yl; i++) {
+                if (elmnt == y[i]) {
+                    arrNo.push(i)
+                } else {
+                    y[i].classList.remove("select-arrow-active");
+                }
+            }
+            for (i = 0; i < xl; i++) {
+                if (arrNo.indexOf(i)) {
+                    x[i].classList.remove("select-show");
+                }
+            }
+        }
 
-                        <!-- Форма скидки -->
-                        <form asp-action="ApplyDiscount" method="post" class="input-group my-3">
-                            <input type="text" name="code" class="form-control" placeholder="Промокод (PROMO10, STUDENT, VIP)" />
-                            <button type="submit" class="btn btn-outline-secondary">Применить</button>
-                        </form>
+        // Модальное окно
+        function initModalLogic() {
+             document.addEventListener('click', function(e) {
+                const btn = e.target.closest('.open-product-modal');
+                if (btn) {
+                    e.preventDefault();
+                    document.getElementById('modalTitle').textContent = btn.dataset.title;
+                    document.getElementById('modalSku').textContent = btn.dataset.sku;
+                    document.getElementById('modalCat').textContent = btn.dataset.cat || '-';
+                    document.getElementById('modalSup').textContent = btn.dataset.sup || '-';
+                    document.getElementById('modalPrice').textContent = btn.dataset.price;
+                    document.getElementById('modalDesc').textContent = btn.dataset.desc || '--- ОПИСАНИЕ ОТСУТСТВУЕТ ---';
+                    const modal = new bootstrap.Modal(document.getElementById('globalProductModal'));
+                    modal.show();
+                }
+            });
+        }
 
-                        <div class="d-grid gap-2 mt-3">
-                            <form asp-action="FinalizeSale" method="post">
-                                <button type="submit" class="btn btn-lg btn-primary w-100">Оформить продажу</button>
-                            </form>
 
-                            <form asp-action="ClearCart" method="post">
-                                <button type="submit" class="btn btn-outline-danger w-100">Сбросить чек</button>
-                            </form>
-                        </div>
-                    }
-                    else
-                    {
-                        <p class="text-center text-muted my-3">Чек пуст. Добавьте товары слева.</p>
-                    }
-                </div>
-            </div>
-        </div>
+        // Главный запуск
+        document.addEventListener('DOMContentLoaded', function () {
+            setupAjaxForms(); // "Корзина"
+            initCustomSelects(); // Фильтры (интерфейс)
+            initSearchLogic(); // Фильтры (логика)
+            initModalLogic(); // Модалка
+            document.addEventListener("click", closeAllSelect); // Закрытие селектов
+        });
+
+    </script>
+}

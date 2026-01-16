@@ -31,8 +31,10 @@ namespace PcStore.Web.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -47,18 +49,21 @@ namespace PcStore.Web.Migrations
                         {
                             Id = 1,
                             Description = "Центральные процессоры (CPU) для ПК",
+                            IsArchived = false,
                             Name = "Процессоры"
                         },
                         new
                         {
                             Id = 2,
                             Description = "Графические процессоры (GPU) для ПК",
+                            IsArchived = false,
                             Name = "Видеокарты"
                         },
                         new
                         {
                             Id = 3,
                             Description = "Стандартные и игровые мониторы для ПК",
+                            IsArchived = false,
                             Name = "Мониторы"
                         });
                 });
@@ -75,8 +80,10 @@ namespace PcStore.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -109,6 +116,7 @@ namespace PcStore.Web.Migrations
                             Id = 1,
                             CategoryId = 1,
                             Description = "Процессор AMD Ryzen 9 9950X3D представляет собой мощное решение для высокопроизводительных систем. Он работает на базовой частоте 4,3 ГГц с возможностью разгона до 5,7 ГГц в режиме boost. Этот чип обладает 16 ядрами и поддерживает 32 потока, что обеспечивает отличную производительность в многозадачных и ресурсоемких приложениях. Процессор оснащен внушительным объемом кэш-памяти L3 в 128 МБ, что способствует быстрому доступу к данным. Он поддерживает оперативную память DDR5 с частотой до 5600 МГц, обеспечивая высокую пропускную способность. Встроенная графика Radeon Graphics позволяет использовать процессор без отдельной видеокарты. С TDP в 170 Вт, этот процессор требует эффективного охлаждения.",
+                            IsArchived = false,
                             Name = "AMD Ryzen 9 9950X3D AM5 OEM",
                             Price = 73499.00m,
                             QuantityInStock = 54,
@@ -120,6 +128,7 @@ namespace PcStore.Web.Migrations
                             Id = 2,
                             CategoryId = 1,
                             Description = "Процессор AMD Ryzen 7 5700X OEM является одним из флагманских устройств от AMD. Он основан на архитектуре Zen 3. Конфигурация модели представляет собой 8-ядерное и 16-потоковое устройство. Ее рабочая частота составляет 3.4 ГГц, а максимальная – 4.6 ГГц в режиме Turbo.\nAMD Ryzen 7 5700X OEM поддерживает сокет AM4, а также использует технологии Precision Boost 2 и Precision Boost Overdrive для ускорения частоты работы в зависимости от требований задач. Процессор поддерживает память типа DDR4.",
+                            IsArchived = false,
                             Name = "AMD Ryzen 7 5700X AM4 OEM",
                             Price = 15399.00m,
                             QuantityInStock = 141,
@@ -167,6 +176,12 @@ namespace PcStore.Web.Migrations
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<decimal>("DiscountPercent")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(11,2)");
@@ -222,6 +237,9 @@ namespace PcStore.Web.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -235,6 +253,7 @@ namespace PcStore.Web.Migrations
                         {
                             Id = 1,
                             ContactInfo = "amdiamond.official@gmail.com",
+                            IsArchived = false,
                             Name = "AMDiamond"
                         });
                 });
@@ -250,6 +269,9 @@ namespace PcStore.Web.Migrations
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<bool>("IsBlocked")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Login")
                         .IsRequired()
@@ -273,6 +295,7 @@ namespace PcStore.Web.Migrations
                         {
                             Id = 1,
                             FullName = "Петров Петр Петрович",
+                            IsBlocked = false,
                             Login = "user_manager",
                             Password = "user_manager_password",
                             RoleId = 1
@@ -281,6 +304,7 @@ namespace PcStore.Web.Migrations
                         {
                             Id = 2,
                             FullName = "Иванов Иван Иванович",
+                            IsBlocked = false,
                             Login = "user_seller",
                             Password = "user_seller_password",
                             RoleId = 2

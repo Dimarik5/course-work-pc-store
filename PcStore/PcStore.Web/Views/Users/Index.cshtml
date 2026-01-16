@@ -7,8 +7,17 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Добавить пользователя</a>
 </p>
+
+<form asp-action="Index" method="get" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="searchString" class="form-control" placeholder="Поиск по Логину или ФИО..." />
+        <button type="submit" class="btn btn-outline-primary">Найти</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Сброс</a>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -24,12 +33,13 @@
             <th>
                 @Html.DisplayNameFor(model => model.Role)
             </th>
-            <th></th>
+            <th>Статус</th>
+            <th>Действия</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="@(item.IsBlocked ? "table-secondary text-muted" : "")">
             <td>
                 @Html.DisplayFor(modelItem => item.FullName)
             </td>
@@ -43,9 +53,27 @@
                 @Html.DisplayFor(modelItem => item.Role.Name)
             </td>
             <td>
+                @if (item.IsBlocked)
+                {
+                    <span class="badge bg-danger">Заблокирован</span>
+                }
+                else
+                {
+                    <span class="badge bg-success">Активен</span>
+                }
+            </td>
+            <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+
+                @if (!item.IsBlocked)
+                {
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="text-danger">Block</a>
+                }
+                else
+                {
+                    <span class="text-muted">Уволен</span>
+                }
             </td>
         </tr>
 }

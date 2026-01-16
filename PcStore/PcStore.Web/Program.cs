@@ -52,6 +52,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Products}/{action=Index}/{id?}"); // Домашняя страница
+    pattern: "{controller=Products}/{action=Index}/{id?}"); // Страница по умолчанию
 
 app.Run();
