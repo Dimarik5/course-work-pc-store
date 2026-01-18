@@ -2,8 +2,13 @@
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Терминал";
-    var cart = ViewBag.Cart as List<PcStore.Web.Models.CartItem>;
-    var cartTotal = (decimal)ViewBag.GrandTotal;
+
+    // Данные из контроллера
+    var activeSale = ViewBag.ActiveSale as PcStore.Web.Models.Sale;
+    var drafts = ViewBag.Drafts as List<PcStore.Web.Models.Sale>;
+
+    // ID чека передаётся в частичное представление списка товаров
+    ViewData["ActiveSaleId"] = activeSale?.Id;
 }
 
 <style>
@@ -19,7 +24,60 @@
         <h1 class="page-title">
             <i class="bi bi-cart4 text-primary"></i> Терминал
         </h1>
-        
+
+        <!-- Уведомление об ошибке -->
+        <!-- Блок предупреждения -->
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert bg-dark border-danger d-flex align-items-start text-start mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill text-danger fs-3 me-2"></i>
+                <div>
+                    <h5 class="text-danger fw-bold mb-1">Ошибка продажи</h5>
+                    <p class="mb-2 small text-muted">@TempData["ErrorMessage"]</p>
+                </div>
+            </div>
+        }
+
+        <!-- Переключатель чеков -->
+        <div class="fade-wrapper-h d-flex gap-2 mb-3" style="padding: 0 30px 12px; white-space: nowrap; overflow-x: auto; overflow-y: hidden; flex-shrink: 0;">
+            
+            @if (drafts != null && drafts.Any())
+            {
+                <!-- Когда есть активные чеки -->
+
+                <!-- Кнопка создания нового -->
+                <form asp-action="CreateNewSale" method="post" style="flex-shrink: 0;">
+                    <button type="submit" class="btn btn-outline-success d-flex align-items-center gap-2" style="border-radius: 20px;">
+                        <i class="bi bi-plus-lg"></i> Новый чек
+                    </button>
+                </form>
+
+                <!-- Список активных чеков -->
+                @if (drafts != null)
+                {
+                    foreach (var draft in drafts)
+                    {
+                        bool isActive = activeSale != null && activeSale.Id == draft.Id;
+
+                        <a href="@Url.Action("Index", new { activeSaleId = draft.Id })"
+                           class="btn d-flex align-items-center gap-2 @(isActive ? "btn-primary" : "btn-outline-secondary")"
+                           style="border-radius: 20px; transition: 0.2s; flex-shrink: 0; height: 38px;">
+                            <span>Чек #@draft.Id</span>
+                            <small class="opacity-75">(@draft.DateTime.ToString("HH:mm"))</small>
+                        </a>
+                    }
+                }
+            }
+            else
+            {
+                <!-- Когда нет активных чеков -->
+                <div class="d-flex align-items-center text-muted" style="min-height: 38px; white-space: normal;">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Нет активных чеков. Начните добавлять товары ниже или нажмите на кнопку создания нового чека справа.
+                </div>
+            }
+        </div>
+
         <!-- Блок фильтров и поиска -->
         <div class="d-flex flex-wrap gap-2">
             <!-- Поиск -->
@@ -59,10 +117,9 @@
         
     </main>
 
-
     <!-- Чек -->
     <div id="cart-container" style="height: 100vh; width: 100%;">
-        <partial name="_CartPartial" />
+        <partial name="_CartPartial" model="activeSale" />
     </div>
 </div>
 

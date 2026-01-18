@@ -258,6 +258,18 @@ h1, h2, h3, h4, h5 {
     mask-repeat: no-repeat;
 }
 
+/* Размытие для блока чеков в терминале */
+.fade-wrapper-h {
+    mask-image: linear-gradient(
+        to right,
+        transparent 0px,
+        black 30px,
+        black calc(100% - 30px),
+        transparent 100%
+    );
+    mask-repeat: no-repeat;
+}
+
 /* Сетка товаров */
 .products-grid {
     display: grid;
@@ -433,6 +445,18 @@ h1, h2, h3, h4, h5 {
     align-items: center;
     justify-content: center;
     gap: 8px;
+}
+
+.btn-add:disabled {
+    background-color: #2c2c30;
+    color: #666;
+    cursor: not-allowed;
+    border: 1px solid transparent;
+}
+
+.btn-add:disabled:hover {
+    background-color: #2c2c30; /* Убираем эффект ховера */
+    color: #666;
 }
 
 .btn-add:hover {

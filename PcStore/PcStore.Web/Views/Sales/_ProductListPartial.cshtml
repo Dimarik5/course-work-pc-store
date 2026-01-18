@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<PcStore.Web.Models.Product>
 
 @{
-    // Функция подбора иконци
+    bool hasActiveSale = ViewBag.HasActiveSale as bool? ?? false;
+
+    // Функция подбора иконки
     string GetIcon(string categoryName)
     {
         var name = categoryName.ToLower();
@@ -65,14 +67,18 @@
                         <form asp-action="AddToCart" method="post" class="add-to-cart-form">
                             <input type="hidden" name="productId" value="@product.Id" />
 
+                            <input type="hidden" name="saleId" value="@ViewData["ActiveSaleId"]" />
+
                             <!-- Кастомный переключатель количества -->
                             <div class="d-flex align-items-center justify-content-between"
-                                 style="background: #0a0a0b; border: 1px solid var(--border); border-radius: 8px; padding: 0 4px;">
+                                 style="background: #0a0a0b; border: 1px solid var(--border); border-radius: 8px; padding: 0 4px;
+                                 @(hasActiveSale ? "" : "opacity: 0.5; pointer-events: none;")">
 
                                 <!-- Кнопка минус -->
                                 <button type="button" class="btn btn-sm text-secondary border-0 p-0"
                                         style="width: 24px; height: 100%;"
-                                        onclick="this.nextElementSibling.stepDown()">
+                                        onclick="this.nextElementSibling.stepDown()"
+                                        @(hasActiveSale ? "" : "disabled")>
                                     <i class="bi bi-dash-lg"></i>
                                 </button>
 
@@ -80,19 +86,28 @@
                                 <input type="number" name="quantity"
                                        class="form-control border-0 bg-transparent text-white text-center p-0 shadow-none"
                                        style="height: 38px; font-weight: 600;"
-                                       value="1" min="1" max="@product.QuantityInStock" />
+                                       value="1" min="1" max="@product.QuantityInStock"
+                                       @(hasActiveSale ? "" : "disabled") />
 
                                 <!-- Кнопка плюс -->
                                 <button type="button" class="btn btn-sm text-white border-0 p-0"
                                         style="width: 24px; height: 100%;"
-                                        onclick="this.previousElementSibling.stepUp()">
+                                        onclick="this.previousElementSibling.stepUp()"
+                                        @(hasActiveSale ? "" : "disabled")>
                                     <i class="bi bi-plus-lg"></i>
                                 </button>
                             </div>
 
                             <!-- Кнопка отправки -->
-                            <button type="submit" class="btn-add">
-                                <span>В ЧЕК</span>
+                            <button type="submit" class="btn-add" @(hasActiveSale ? "" : "disabled")>
+                                @if (hasActiveSale)
+                                {
+                                    <span>В ЧЕК</span>
+                                }
+                                else
+                                {
+                                    <span style="font-size: 0.8rem; opacity: 0.7;">НЕТ ЧЕКА</span>
+                                }
                             </button>
                         </form>
                     </div>

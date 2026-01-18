@@ -29,7 +29,7 @@ namespace PcStore.Web.Models
         public SaleStatus Status { get; set; } = SaleStatus.Draft;
 
         // Процент скидки
-        [Display(Name = "Скидка (%)")]
+        [Display(Name = "Скидка (множитель)")]
         public decimal DiscountPercent { get; set; } = 0; // По умолчанию 0
 
         // --- СВЯЗИ ---
