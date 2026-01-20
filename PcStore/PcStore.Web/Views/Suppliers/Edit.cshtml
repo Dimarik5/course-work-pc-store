@@ -1,39 +1,41 @@
 ﻿@model PcStore.Web.Models.Supplier
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Редактирование";
 }
 
-<h1>Edit</h1>
+<div class="admin-container scrollable">
+    <div class="form-card">
+        <h2 class="page-title text-center mb-4" style="justify-content: center">РЕДАКТИРОВАНИЕ</h2>
 
-<h4>Supplier</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
         <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <!-- Скрытый ID -->
             <input type="hidden" asp-for="Id" />
+
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <input asp-for="Name" class="form-control" placeholder="Название поставщика..." />
+                <span asp-validation-for="Name" class="text-danger small"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="ContactInfo" class="control-label"></label>
-                <input asp-for="ContactInfo" class="form-control" />
-                <span asp-validation-for="ContactInfo" class="text-danger"></span>
+                <textarea asp-for="ContactInfo" class="form-control" placeholder="E-mail поставщика..."></textarea>
+                <span asp-validation-for="ContactInfo" class="text-danger small"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-outline-secondary px-4">Отмена</a>
+                <button type="submit" class="btn btn-primary px-4">Сохранить</button>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

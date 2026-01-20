@@ -1,33 +1,73 @@
 ﻿@model PcStore.Web.Models.Supplier
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Архивация поставщика";
+
+    // Всего моделей товаров (исключая архивные)
+    var productsCount = Model.Products.Count(p => !p.IsArchived);
+
 }
 
-<h1>Delete</h1>
+<div class="admin-container scrollable">
+    <div class="form-card text-center" style="border-color: var(--danger); box-shadow: 0 0 30px rgba(247, 90, 104, 0.1);">
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Supplier</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ContactInfo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ContactInfo)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+        <div class="mb-4 text-danger">
+            <i class="bi bi-archive-fill display-1"></i>
+        </div>
+
+        <h2 class="page-title text-center text-danger mb-3" style="justify-content: center;">АРХИВИРОВАТЬ ПОСТАВЩИКА?</h2>
+
+        <p class="text-muted fs-5 mb-4">
+            Вы собираетесь переместить поставщика
+            <strong class="text-white">"@Model.Name"</strong> в&nbsp;архив.
+            <br />Он будет скрыт из списка поставщиков и из списка выбора поставщика при создании/редактировании товаров.
+        </p>
+
+        <!-- Карточка информации -->
+        <div class="bg-dark p-3 rounded mb-4 text-start d-inline-block mx-auto" style="border: 1px solid var(--border); width: 100%">
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="text-muted me-3">Разновидностей товаров:</span>
+                <!-- Если количество > 0, то цвет красный (опасно), иначе зелёный (готово к удалению) -->
+                <span class="@(productsCount > 0 ? "text-danger fw-bold fs-5" : "text-success")">
+                    @productsCount
+                </span>
+            </div>
+        </div>
+
+        <!-- Логика блокировки -->
+        @if (productsCount > 0)
+        {
+            <!-- Блок предупреждения -->
+            <div class="alert bg-dark border-danger d-flex align-items-start text-start mb-4" role="alert">
+                <i class="bi bi-exclamation-octagon-fill text-danger fs-3 me-3"></i>
+                <div>
+                    <h5 class="text-danger fw-bold mb-1">Действие невозможно</h5>
+                    <p class="mb-2 small text-muted">
+                        В эту категорию входят неархивированные товары.
+                        <br />Архивировать можно только категорию, в которой нет неархивированных товаров.
+                    </p>
+                    <p class="mb-0 small">
+                        Пожалуйста, проведите процедуру архивации <a asp-controller="Products" asp-action="Index" asp-route-categoryId="@Model.Id" class="text-warning text-decoration-underline">этих товаров</a>.
+                    </p>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-5">
+                <a asp-action="Index" class="btn btn-outline-secondary px-4">Назад</a>
+                <!-- Кнопка отключена -->
+                <button class="btn btn-secondary px-4" disabled>Архивировать</button>
+            </div>
+        }
+        else
+        {
+            <!-- Всё чисто, можно удалять -->
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <div class="d-flex justify-content-between mt-5">
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4">Отмена</a>
+                    <input type="submit" value="Архивировать" class="btn btn-danger px-4" />
+                </div>
+            </form>
+        }
+    </div>
 </div>

@@ -35,12 +35,13 @@ namespace PcStore.Web.Controllers
             // Запрос к БД
             var sales = await _context.Sales
                 .Include(s => s.User)
+                .Where(s => s.Status == SaleStatus.Paid) // Только оплаченные чеки
                 .Where(s => s.DateTime >= start && s.DateTime <= end)
                 .OrderByDescending(s => s.DateTime)
                 .ToListAsync();
 
             // Модель для отображения
-            var model = new SaleReportViewModel
+            var model = new SaleReport
             {
                 StartDate = start,
                 EndDate = endDate ?? DateTime.Now.Date.AddHours(23).AddMinutes(59),
@@ -62,6 +63,7 @@ namespace PcStore.Web.Controllers
 
             var sales = await _context.Sales
                 .Include(s => s.User)
+                .Where(s => s.Status == SaleStatus.Paid) // Только оплаченные чеки
                 .Where(s => s.DateTime >= start && s.DateTime <= end)
                 .OrderByDescending(s => s.DateTime)
                 .ToListAsync();

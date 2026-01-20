@@ -18,18 +18,63 @@ namespace PcStore.Web.Controllers
         }
 
         // GET: Users
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index()
         {
-            // Загрузка пользователей вместе с их ролями
-            var users = _context.Users.Include(u => u.Role).AsQueryable();
+            // Загружаем список ролей для фильтра
+            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Name");
 
-            // Поиск пользователя (по логину или ФИО)
+            // Возвращаем пустой список (AJAX подгрузит данные мгновенно)
+            return View(new List<User>());
+        }
+
+        // Поиск
+        [HttpGet]
+        public async Task<IActionResult> Search(string searchString, int? roleId, string status, string sortOrder)
+        {
+            var query = _context.Users.Include(u => u.Role).AsQueryable();
+
+            // Поиск
             if (!string.IsNullOrEmpty(searchString))
             {
-                users = users.Where(u => u.Login.Contains(searchString) || u.FullName.Contains(searchString));
+                query = query.Where(u => u.FullName.Contains(searchString) || u.Login.Contains(searchString));
             }
 
-            return View(await users.ToListAsync());
+            // Фильтр по роли
+            if (roleId.HasValue && roleId > 0)
+            {
+                query = query.Where(u => u.RoleId == roleId);
+            }
+
+            // Фильтр по статусу
+            if (!string.IsNullOrEmpty(status))
+            {
+                if (status == "active")
+                {
+                    query = query.Where(u => !u.IsBlocked);
+                }
+                else if (status == "blocked")
+                {
+                    query = query.Where(u => u.IsBlocked);
+                }
+            }
+
+            // Сортировка
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    query = query.OrderByDescending(u => u.FullName);
+                    break;
+                case "role_asc":
+                    query = query.OrderBy(u => u.Role.Name);
+                    break;
+                default:
+                    query = query.OrderBy(u => u.FullName);
+                    break;
+            }
+
+            var users = await query.ToListAsync();
+
+            return PartialView("_UsersTablePartial", users);
         }
 
         // GET: Users/Details/5

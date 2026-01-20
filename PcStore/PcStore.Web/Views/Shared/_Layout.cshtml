@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- Flatpickr календарь (CSS) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
     <div class="app-wrapper">
@@ -14,7 +16,7 @@
         <!-- ГЛОБАЛЬНЫЙ САЙДБАР -->
         <aside class="pos-sidebar">
             @{
-                string GetActive(string controller, string action = null)
+                string GetActive(string controller, params string[] actions)
                 {
                     var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
                     var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
@@ -22,10 +24,16 @@
                     if (!string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase))
                         return "";
 
-                    if (action == null)
+                    if (actions == null || actions.Length == 0)
                         return "active";
 
-                    return string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+                    foreach (var act in actions)
+                    {
+                        if (string.Equals(currentAction, act, StringComparison.OrdinalIgnoreCase))
+                            return "active";
+                    }
+
+                    return "";
                 }
             }
 
@@ -53,7 +61,7 @@
 
             @if (User.IsInRole("Менеджер"))
             {
-                <a asp-controller="Sales" asp-action="History" class="sidebar-icon @GetActive("Sales", "History")" title="История">
+                <a asp-controller="Sales" asp-action="History" class="sidebar-icon @GetActive("Sales", "History", "Details")" title="История">
                     <i class="bi bi-clock-history"></i>
                 </a>
 
@@ -82,6 +90,10 @@
         </main>
 
     </div>
+
+    <!-- Flatpickr календарь (JS) -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

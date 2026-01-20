@@ -2,13 +2,18 @@
 
 namespace PcStore.Web.Models
 {
-    public class SaleReportViewModel
+    public class SaleReport
     {
+        // --- ПОЛЯ ---
+
         // Входные данные (фильтр)
+
+        // С какой даты
         [DataType(DataType.Date)]
         [Display(Name = "С даты")]
         public DateTime StartDate { get; set; }
 
+        // По какую дату
         [DataType(DataType.Date)]
         [Display(Name = "По дату")]
         public DateTime EndDate { get; set; }

@@ -64,7 +64,7 @@
                     <div class="card-bottom">
                         <div class="tech-price">@product.Price.ToString("N2") ₽</div>
 
-                        <form asp-action="AddToCart" method="post" class="add-to-cart-form">
+                        <form asp-action="AddItem" method="post" class="add-to-cart-form">
                             <input type="hidden" name="productId" value="@product.Id" />
 
                             <input type="hidden" name="saleId" value="@ViewData["ActiveSaleId"]" />

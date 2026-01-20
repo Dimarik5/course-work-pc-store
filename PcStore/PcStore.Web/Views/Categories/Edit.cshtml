@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Редактирование";
-    Layout = "_Layout";
 }
 
 <div class="admin-container scrollable">
@@ -17,13 +16,13 @@
 
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control" placeholder="Например: Процессоры" />
                 <span asp-validation-for="Name" class="text-danger small"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control" rows="2"></textarea>
+                <textarea asp-for="Description" class="form-control" rows="2" placeholder="Опишите категорию чуть подробнее..."></textarea>
                 <span asp-validation-for="Description" class="text-danger small"></span>
             </div>
 

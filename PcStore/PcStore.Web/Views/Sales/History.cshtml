@@ -1,64 +1,151 @@
 ﻿@model IEnumerable<PcStore.Web.Models.Sale>
+@using PcStore.Web.Models
 
 @{
     ViewData["Title"] = "История продаж";
 }
 
-<h2>История продаж</h2>
+<div class="admin-container">
 
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>№ Чека</th>
-            <th>Дата</th>
-            <th>Продавец</th>
-            <th>Сумма</th>
-            <th>Скидка</th>
-            <th>Действия</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            // Расчёт реальной стоимости товаров (без скидки)
-            decimal originalSum = item.SaleItems.Sum(x => x.PriceAtSale * x.Quantity);
+    <!-- Заголовок -->
+    <div class="d-flex align-items-center mb-4">
+        <i class="bi bi-clock-history text-primary display-6 me-3"></i>
+        <h1 class="page-title m-0" style="font-family: 'MTSans-Extended'; letter-spacing: 2px;">ИСТОРИЯ ПРОДАЖ</h1>
+    </div>
 
-            // Расчёт разницы (размер скидки)
-            decimal discount = originalSum - item.TotalAmount;
+    <!-- Поиск и фильтры -->
+    <div class="d-flex flex-wrap gap-3 mb-4 align-items-center justify-content-between">
+        <div class="d-flex flex-wrap flex-grow-1 gap-2">
+            <!-- Поиск -->
+            <div class="search-bar flex-grow-1 mb-0" style="min-width: 300px">
+                <i class="bi bi-search text-muted me-3"></i>
+                <input type="text" id="historySearchInput" class="search-input" autofocus
+                       placeholder="Номер чека или ФИО продавца..." autocomplete="off" />
+                <div id="history-spinner" class="spinner-border text-primary spinner-border-sm ms-2" role="status" style="display: none;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
 
-            <tr>
-                <td>@item.Id</td>
-                <td>
-                    @item.DateTime.ToShortDateString()
-                    <small class="text-muted">@item.DateTime.ToShortTimeString()</small>
-                </td>
-                <td>@item.User?.FullName</td>
-                <td class="fw-bold text-primary">@item.TotalAmount.ToString("C")</td>
+            <!-- Фильтр по статусу -->
+            <select id="filterStatus" class="custom-select" style="min-width: 200px;">
+                <option value="">Все статусы</option>
+                <option value="@((int)SaleStatus.Draft)">Черновики</option>
+                <option value="@((int)SaleStatus.WaitingForPayment)">Ожидающие оплаты</option>
+                <option value="@((int)SaleStatus.Paid)">Оплаченные</option>
+                <option value="-1">Отмененные</option>
+                <option value="@((int)SaleStatus.CancelledBySeller)">Отмененные продавцом</option>
+                <option value="@((int)SaleStatus.CancelledBySystem)">Отмененные системой</option>
+            </select>
+        </div>
+    </div>
 
-                <td>
-                    @if (discount > 0.00m) // Если скидка больше 0.00 руб.
-                    {
-                        // Вычисление процента
-                        int percent = (int)Math.Round((discount / originalSum) * 100);
+    <!-- Контейнер для таблицы -->
+    <div id="sales-table-container" class="table-card" style="flex-grow: 1; min-height: 0; display: flex; flex-direction: column;">
+        <partial name="_SalesTablePartial" />
+    </div>
+</div>
 
-                        <span class="badge bg-success">
-                            -@discount.ToString("C") (@percent%)
-                        </span>
-                        <br />
-                        <small class="text-muted text-decoration-line-through">
-                            @originalSum.ToString("C")
-                        </small>
-                    }
-                    else
-                    {
-                        <span class="text-muted">-</span>
-                    }
-                </td>
-
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Детали</a>
-                </td>
-            </tr>
+@section Scripts {
+    <script>
+        // Красивые селекты
+        function initCustomSelects() {
+            var x, i, j, l, ll, selElmnt, a, b, c;
+            x = document.getElementsByClassName("custom-select");
+            l = x.length;
+            for (i = 0; i < l; i++) {
+                selElmnt = x[i];
+                if (selElmnt.nextElementSibling && selElmnt.nextElementSibling.classList.contains("select-wrapper")) continue;
+                var wrapper = document.createElement("DIV");
+                wrapper.setAttribute("class", "select-wrapper");
+                selElmnt.parentNode.insertBefore(wrapper, selElmnt);
+                wrapper.appendChild(selElmnt);
+                a = document.createElement("DIV");
+                a.setAttribute("class", "select-selected");
+                a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+                wrapper.appendChild(a);
+                b = document.createElement("DIV");
+                b.setAttribute("class", "select-items");
+                ll = selElmnt.length;
+                for (j = 0; j < ll; j++) {
+                    c = document.createElement("DIV");
+                    c.innerHTML = selElmnt.options[j].innerHTML;
+                    if (selElmnt.options[j].selected) c.setAttribute("class", "same-as-selected");
+                    c.setAttribute("data-index", j);
+                    c.addEventListener("click", function (e) {
+                        var s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+                        var h = this.parentNode.previousSibling;
+                        for (var i = 0; i < s.length; i++) {
+                            if (s.options[i].innerHTML == this.innerHTML) {
+                                s.selectedIndex = i;
+                                h.innerHTML = this.innerHTML;
+                                s.dispatchEvent(new Event('change'));
+                                var y = this.parentNode.getElementsByClassName("same-as-selected");
+                                for (var k = 0; k < y.length; k++) { y[k].removeAttribute("class"); }
+                                this.setAttribute("class", "same-as-selected");
+                                break;
+                            }
+                        }
+                        h.click();
+                    });
+                    b.appendChild(c);
+                }
+                wrapper.appendChild(b);
+                a.addEventListener("click", function (e) {
+                    e.stopPropagation();
+                    closeAllSelect(this);
+                    this.nextSibling.classList.toggle("select-show");
+                    this.classList.toggle("select-arrow-active");
+                });
+                selElmnt.style.display = "none";
+            }
         }
-    </tbody>
-</table>
+        function closeAllSelect(elmnt) {
+            var x, y, i, xl, yl, arrNo = [];
+            x = document.getElementsByClassName("select-items");
+            y = document.getElementsByClassName("select-selected");
+            xl = x.length; yl = y.length;
+            for (i = 0; i < yl; i++) { if (elmnt == y[i]) arrNo.push(i); else y[i].classList.remove("select-arrow-active"); }
+            for (i = 0; i < xl; i++) { if (arrNo.indexOf(i)) x[i].classList.remove("select-show"); }
+        }
+        
+        document.addEventListener("click", closeAllSelect);
+
+        // Логика поиска
+        document.addEventListener('DOMContentLoaded', function () {
+            initCustomSelects();
+
+            const searchInput = document.getElementById('historySearchInput');
+            const filterStatus = document.getElementById('filterStatus');
+            const tableContainer = document.getElementById('sales-table-container');
+            const spinner = document.getElementById('history-spinner');
+            let timeout = null;
+
+            function loadData() {
+                const query = searchInput.value;
+                const status = filterStatus.value;
+
+                spinner.style.display = 'block';
+
+                const url = `@Url.Action("SearchHistory", "Sales")?searchString=${encodeURIComponent(query)}&statusId=${status}`;
+
+                fetch(url)
+                    .then(response => response.text())
+                    .then(html => {
+                        tableContainer.innerHTML = html;
+                        spinner.style.display = 'none';
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        spinner.style.display = 'none';
+                    });
+            }
+
+            searchInput.addEventListener('input', function () {
+                clearTimeout(timeout);
+                timeout = setTimeout(loadData, 300);
+            });
+
+            filterStatus.addEventListener('change', loadData);
+        });
+    </script>
+}

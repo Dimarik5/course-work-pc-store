@@ -1,94 +1,137 @@
 ﻿@model PcStore.Web.Models.Sale
+@using PcStore.Web.Models
 
 @{
-    ViewData["Title"] = $"Чек №{Model.Id}";
+    ViewData["Title"] = $"Чек #{Model.Id}";
 
-    // Скидка
     decimal subTotal = Model.SaleItems.Sum(x => x.PriceAtSale * x.Quantity);
     decimal discount = subTotal - Model.TotalAmount;
 }
 
-<div class="container mt-4">
-    <div class="card shadow-sm">
-        <div class="card-header bg-light">
-            <div class="d-flex justify-content-between align-items-center">
-                <h4 class="mb-0">Чек продажи №@Model.Id</h4>
-                <span class="badge bg-primary fs-6">@Model.DateTime.ToString("g")</span>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="row mb-4">
-                <div class="col-sm-6">
-                    <h6 class="text-muted">Продавец:</h6>
-                    <p class="fw-bold">@Model.User?.FullName</p>
+<div class="admin-container scrollable">
+    <div class="form-card" style="max-width: 1000px; padding: 0 0 40px;">
+
+        <!-- Шапка чека -->
+        <div class="p-4 border-bottom border-secondary">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="text-muted small mb-1" style="font-family: 'MTSans-Condensed'">@Model.DateTime.ToString("f")</div>
+                    <h2 class="page-title m-0" style="margin-bottom: 0; letter-spacing: 1px;">
+                        ЧЕК <span style="color: var(--accent);">#@Model.Id</span>
+                    </h2>
                 </div>
-                <div class="col-sm-6 text-end">
-                    <h6 class="text-muted">Итоговая сумма:</h6>
-                    <h3 class="text-success">@Model.TotalAmount.ToString("C")</h3>
+
+                <div>
+                    @switch (Model.Status)
+                    {
+                        case SaleStatus.Draft:
+                            <span class="badge bg-warning text-dark fs-6 px-3 py-2">ЧЕРНОВИК</span>
+                            break;
+                        case SaleStatus.WaitingForPayment:
+                            <span class="badge bg-warning text-dark fs-6 px-3 py-2">ОЖИДАЕТ ОПЛАТЫ</span>
+                            break;
+                        case SaleStatus.Paid:
+                            <span class="badge bg-success text-dark fs-6 px-3 py-2">ОПЛАЧЕН</span>
+                            break;
+                        case SaleStatus.CancelledBySeller:
+                            <span class="badge bg-danger fs-6 px-3 py-2">ОТМЕНЕН ПРОДАВЦОМ</span>
+                            break;
+                        case SaleStatus.CancelledBySystem:
+                            <span class="badge bg-danger fs-6 px-3 py-2">ИСТЕК СРОК ОПЛАТЫ</span>
+                            break;
+                        default:
+                            <span class="badge bg-secondary fs-6 px-3 py-2">НЕИЗВЕСТНО</span>
+                            break;
+                    }
                 </div>
             </div>
 
-            <h5>Список товаров:</h5>
-            <table class="table table-bordered">
-                <thead class="table-light">
+            <div class="mt-3 d-flex align-items-center text-muted">
+                <i class="bi bi-person-circle me-2"></i>
+                <span>Продавец: <strong class="text-white">@Model.User?.FullName</strong></span>
+            </div>
+        </div>
+
+        <!-- Список товаров -->
+        <div class="p-0">
+            <table class="table table-hover mb-0" style="table-layout: fixed; min-width: 0;">
+                <thead style="background: rgba(255,255,255,0.02); position: static;">
                     <tr>
-                        <th>Товар</th>
-                        <th class="text-center">Цена на момент продажи</th>
-                        <th class="text-center">Количество</th>
-                        <th class="text-end">Сумма</th>
+                        <th style="padding-left: 25px; width: 45%; position: static;">Товар</th>
+                        <th class="text-center" style="width: 20%; position: static;">Цена за шт.</th>
+                        <th class="text-center" style="width: 10%; position: static;">Кол-во</th>
+                        <th class="text-end" style="padding-right: 25px; width: 25%; position: static;">Сумма</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model.SaleItems)
                     {
                         <tr>
-                            <td>
+                            <td style="padding-left: 25px; overflow: hidden; text-overflow: ellipsis;">
                                 @if (item.Product != null)
                                 {
-                                    @item.Product.Name
-                                    <br />
-                                    <small class="text-muted">Артикул: @item.Product.Sku</small>
+                                    <div class="fw-bold text-white text-truncate">@item.Product.Name</div>
+                                    <div class="small text-muted text-truncate" style="font-family: 'MTSans-Condensed'; opacity: 0.7;">
+                                        Артикул: @item.Product.Sku
+                                    </div>
                                 }
                                 else
                                 {
-                                    <span class="text-danger">Товар был удален из базы</span>
+                                    <span class="text-danger fst-italic">Товар удален из базы</span>
                                 }
                             </td>
-                            <td class="text-center">@item.PriceAtSale.ToString("C")</td>
-                            <td class="text-center">@item.Quantity</td>
-                            <td class="text-end">@((item.PriceAtSale * item.Quantity).ToString("C"))</td>
+                            <td class="text-center text-muted">
+                                @item.PriceAtSale.ToString("N2") ₽
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-dark border border-secondary text-white">@item.Quantity</span>
+                            </td>
+                            <td class="text-end fw-bold text-white" style="padding-right: 25px;">
+                                @((item.PriceAtSale * item.Quantity).ToString("N2")) ₽
+                            </td>
                         </tr>
                     }
                 </tbody>
             </table>
+        </div>
 
-            <!-- ИТОГИ -->
-            <div class="row justify-content-end mt-3">
-                <div class="col-md-5 col-lg-4">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Подытог:</span>
-                            <strong>@subTotal.ToString("C")</strong>
-                        </li>
+        <!-- Итоги -->
+        <div class="p-4 bg-dark border-top border-secondary">
+            <div class="row justify-content-end">
+                <div class="col-md-7 col-lg-6">
 
-                        @if (discount > 0.01m)
-                        {
-                            <li class="list-group-item d-flex justify-content-between text-success">
-                                <span>Скидка:</span>
-                                <strong>-@discount.ToString("C")</strong>
-                            </li>
-                        }
+                    <div class="d-flex justify-content-between mb-2 text-muted">
+                        <span>Подытог:</span>
+                        <span>@subTotal.ToString("N2") ₽</span>
+                    </div>
 
-                        <li class="list-group-item d-flex justify-content-between bg-light">
-                            <span class="fs-5">ИТОГО:</span>
-                            <span class="fs-5 fw-bold text-primary">@Model.TotalAmount.ToString("C")</span>
-                        </li>
-                    </ul>
+                    @if (discount > 0.01m)
+                    {
+                        <div class="d-flex justify-content-between mb-3 text-success">
+                            <span>Скидка:</span>
+                            <span>-@discount.ToString("N2") ₽</span>
+                        </div>
+                    }
+
+                    <hr class="border-secondary" />
+
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <span class="fs-5 text-white">ИТОГО:</span>
+                        <span style="font-family: 'MTSans-Display'; font-size: 1.8rem; color: var(--accent); line-height: 1; text-align: right;">
+                            @Model.TotalAmount.ToString("N2") ₽
+                        </span>
+                    </div>
+
                 </div>
             </div>
         </div>
-        <div class="card-footer">
-            <a asp-action="History" class="btn btn-secondary">Назад к истории</a>
+
+        <!-- Кнопка назад -->
+        <div class="mt-5" style="padding-left: 40px;">
+            <a asp-action="History" class="btn btn-outline-secondary px-4">
+                <i class="bi bi-arrow-left me-2"></i> Назад к истории
+            </a>
         </div>
+
     </div>
 </div>

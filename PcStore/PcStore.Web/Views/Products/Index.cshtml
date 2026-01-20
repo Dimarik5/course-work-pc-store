@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Склад";
-    Layout = "_Layout";
 }
 
 <div class="admin-container">
@@ -136,7 +135,7 @@
                     this.classList.toggle("select-arrow-active");
                 });
 
-                // Прячем оригинальный селект (но не удаляем, он хранит данные!)
+                // Скрыть оригинальный селект
                 selElmnt.style.display = "none";
             }
         }
@@ -183,7 +182,6 @@
 
             // Главная функция загрузки
             function loadData() {
-                // Собираем все значения
                 const query = searchInput.value;
                 const cat = filterCategory.value;
                 const sup = filterSupplier.value;
@@ -217,7 +215,6 @@
             filterSupplier.addEventListener('change', loadData);
             sortOrder.addEventListener('change', loadData);
 
-            // Загружаем данные сразу при открытии страницы
             loadData();
         });
     </script>

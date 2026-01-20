@@ -123,6 +123,7 @@ namespace PcStore.Web.Controllers
             }
 
             var category = await _context.Categories
+                .Include(c => c.Products)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
@@ -132,18 +133,28 @@ namespace PcStore.Web.Controllers
             return View(category);
         }
 
+        // Архивация
         // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var category = await _context.Categories.FindAsync(id);
-            if (category != null)
+            if (category == null) return NotFound();
+
+            // Есть ли в этой категории неархивированные товары
+            bool hasActiveProducts = await _context.Products.AnyAsync(p => p.CategoryId == id && !p.IsArchived);
+
+            if (hasActiveProducts)
             {
-                _context.Categories.Remove(category);
+                return RedirectToAction(nameof(Delete), new { id = id });
             }
 
+            category.IsArchived = true;
+
+            _context.Categories.Update(category);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

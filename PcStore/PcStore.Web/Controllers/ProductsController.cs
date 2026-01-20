@@ -36,8 +36,8 @@ namespace PcStore.Web.Controllers
             }
 
             // Данные для фильтров
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", categoryId);
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", supplierId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories.Where(c => !c.IsArchived), "Id", "Name", categoryId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers.Where(c => !c.IsArchived), "Id", "Name", supplierId);
 
             // Изначальный запрос
             return View(new List<Product>());
@@ -66,8 +66,8 @@ namespace PcStore.Web.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name");
+            ViewData["CategoryId"] = new SelectList(_context.Categories.Where(c => !c.IsArchived), "Id", "Name");
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers.Where(c => !c.IsArchived), "Id", "Name");
             return View();
         }
 
@@ -84,8 +84,8 @@ namespace PcStore.Web.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", product.SupplierId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories.Where(c => !c.IsArchived), "Id", "Name", product.CategoryId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers.Where(c => !c.IsArchived), "Id", "Name", product.SupplierId);
             return View(product);
         }
 
@@ -102,8 +102,8 @@ namespace PcStore.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", product.SupplierId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories.Where(c => !c.IsArchived), "Id", "Name", product.CategoryId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers.Where(c => !c.IsArchived), "Id", "Name", product.SupplierId);
             return View(product);
         }
 
@@ -139,8 +139,8 @@ namespace PcStore.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", product.SupplierId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories.Where(c => !c.IsArchived), "Id", "Name", product.CategoryId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers.Where(c => !c.IsArchived), "Id", "Name", product.SupplierId);
             return View(product);
         }
 

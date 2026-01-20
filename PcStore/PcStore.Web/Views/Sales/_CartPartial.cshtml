@@ -28,8 +28,8 @@
                             @((item.Quantity * item.PriceAtSale).ToString("N2"))
                         </span>
 
-                        <!-- Удаление (передаем saleId) -->
-                        <form asp-controller="Sales" asp-action="RemoveFromCart" method="post" class="ajax-form">
+                        <!-- Удаление -->
+                        <form asp-controller="Sales" asp-action="RemoveItem" method="post" class="ajax-form">
                             <input type="hidden" name="productId" value="@item.ProductId" />
                             <input type="hidden" name="saleId" value="@Model.Id" />
                             <button type="submit" class="btn btn-sm text-danger" style="background: none; border: none;">✕</button>
@@ -88,7 +88,7 @@
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 10px;">
-                <!-- Отмена (Удаление черновика) -->
+                <!-- Отмена продавцом -->
                 <form asp-controller="Sales" asp-action="CancelSale" method="post" class="h-100">
                     <input type="hidden" name="saleId" value="@Model.Id" />
                     <button class="btn" style="width: 100%; height: 100%; background: #333; color: var(--danger); border-radius: 12px;">

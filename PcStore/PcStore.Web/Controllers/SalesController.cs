@@ -18,20 +18,20 @@ namespace PcStore.Web.Controllers
             _context = context;
         }
 
-        // --- ГЛАВНАЯ СТРАНИЦА (ТЕРМИНАЛ) ---
+        // Главная страница
         [HttpGet]
         public async Task<IActionResult> Index(int? activeSaleId, string searchString, int? categoryId, int? supplierId, string sortOrder)
         {
-            // 1. Получаем ID текущего пользователя
+            // ID текущего пользователя
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            // 2. Ищем все активные черновики этого продавца (для переключателя в будущем)
+            // Поиск всех активных черновиков этого продавца
             var drafts = await _context.Sales
                 .Where(s => s.UserId == userId && s.Status == SaleStatus.Draft)
                 .OrderByDescending(s => s.DateTime)
                 .ToListAsync();
 
-            // 3. Определяем, какой чек показывать
+            // Какой чек показывать
             Sale currentSale = null;
 
             if (activeSaleId.HasValue)
@@ -39,27 +39,25 @@ namespace PcStore.Web.Controllers
                 currentSale = drafts.FirstOrDefault(s => s.Id == activeSaleId);
             }
 
-            // Если не нашли или не передали - берем последний открытый
+            // Если не найден - взять последний открытый
             if (currentSale == null)
             {
                 currentSale = drafts.FirstOrDefault();
             }
 
-            // 4. Загружаем детали для текущего чека (товары)
+            // Детали для текущего чека
             if (currentSale != null)
             {
-                // Явная загрузка товаров внутри чека
                 await _context.Entry(currentSale)
                     .Collection(s => s.SaleItems)
                     .Query()
                     .Include(si => si.Product)
                     .LoadAsync();
 
-                // Расчет итогов для View
                 CalculateTotals(currentSale);
             }
 
-            // 5. Загружаем товары для витрины (ТВОЯ ЛОГИКА ФИЛЬТРАЦИИ)
+            // Товары для витрины с фильтрацией
             var productsQuery = _context.Products
                 .Include(p => p.Category)
                 .Include(p => p.Supplier)
@@ -93,8 +91,7 @@ namespace PcStore.Web.Controllers
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", categoryId);
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", supplierId);
 
-            // 6. Упаковываем всё во ViewBag
-            ViewBag.ActiveSale = currentSale; // Это пойдет в PartialView чека
+            ViewBag.ActiveSale = currentSale;
             ViewBag.Drafts = drafts;
 
             ViewBag.HasActiveSale = currentSale != null;
@@ -102,7 +99,7 @@ namespace PcStore.Web.Controllers
             return View(await productsQuery.ToListAsync());
         }
 
-        // --- AJAX: ЖИВОЙ ПОИСК (Тот же метод, только с фильтрами) ---
+        // Живой поиск AJAX с фильтрами
         [HttpGet]
         public async Task<IActionResult> SearchProducts(string searchString, int? categoryId, int? supplierId, string sortOrder)
         {
@@ -161,9 +158,9 @@ namespace PcStore.Web.Controllers
             return RedirectToAction("Index", new { activeSaleId = sale.Id });
         }
 
-        // Добавить товар (Сразу в БД!)
+        // Добавить товар (сразу в БД)
         [HttpPost]
-        public async Task<IActionResult> AddToCart(int productId, int quantity, int? saleId)
+        public async Task<IActionResult> AddItem(int productId, int quantity, int? saleId)
         {
             Sale sale;
 
@@ -175,7 +172,7 @@ namespace PcStore.Web.Controllers
             else
             {
                 sale = await _context.Sales.FindAsync(saleId);
-                // Если чека нет или он уже оплачен - создаем новый
+                // Если чека нет или он уже оплачен - создать новый
                 if (sale == null || sale.Status != SaleStatus.Draft)
                     return await CreateNewSaleAndAdd(productId, quantity);
             }
@@ -183,13 +180,13 @@ namespace PcStore.Web.Controllers
             var product = await _context.Products.FindAsync(productId);
             if (product == null) return NotFound();
 
-            // Ищем товар в БД
+            // Поиск товара в БД
             var existingItem = await _context.SaleItems
                 .FirstOrDefaultAsync(si => si.SaleId == sale.Id && si.ProductId == productId);
 
-            // Логика проверка количества
-            int currentQtyInCart = existingItem?.Quantity ?? 0; // Сколько уже лежит
-            int newTotalQty = currentQtyInCart + quantity;      // Сколько хочет положить
+            // Логика проверки количества
+            int currentQtyInCart = existingItem?.Quantity ?? 0;
+            int newTotalQty = currentQtyInCart + quantity;
 
             if (newTotalQty > product.QuantityInStock)
             {
@@ -207,14 +204,14 @@ namespace PcStore.Web.Controllers
                     SaleId = sale.Id,
                     ProductId = product.Id,
                     Quantity = quantity,
-                    PriceAtSale = product.Price // Фиксируем цену
+                    PriceAtSale = product.Price
                 };
                 _context.SaleItems.Add(newItem);
             }
 
             await _context.SaveChangesAsync();
 
-            ViewBag.LastChangedId = productId; // Для анимации
+            ViewBag.LastChangedId = productId;
             return await ReloadCartPartial(sale.Id);
         }
 
@@ -225,12 +222,12 @@ namespace PcStore.Web.Controllers
             _context.Sales.Add(sale);
             await _context.SaveChangesAsync();
 
-            return await AddToCart(productId, quantity, sale.Id);
+            return await AddItem(productId, quantity, sale.Id);
         }
 
         // Удаление товара (из БД)
         [HttpPost]
-        public async Task<IActionResult> RemoveFromCart(int productId, int saleId)
+        public async Task<IActionResult> RemoveItem(int productId, int saleId)
         {
             var item = await _context.SaleItems
                 .FirstOrDefaultAsync(si => si.SaleId == saleId && si.ProductId == productId);
@@ -244,6 +241,7 @@ namespace PcStore.Web.Controllers
             return await ReloadCartPartial(saleId);
         }
 
+        // Применение скидки
         [HttpPost]
         public async Task<IActionResult> ApplyDiscount(string code, int saleId)
         {
@@ -265,33 +263,26 @@ namespace PcStore.Web.Controllers
             return await ReloadCartPartial(saleId);
         }
 
-        // Отмена (Удаление черновика из БД)
+        // Отмена продавцом
         [HttpPost]
         public async Task<IActionResult> CancelSale(int saleId)
         {
             var sale = await _context.Sales.FindAsync(saleId);
 
-            // Отменяем только если это Черновик
             if (sale != null && sale.Status == SaleStatus.Draft)
             {
-                // 1. Меняем статус на "Отменен продавцом" (это цифра 3)
+                // Смена статуса на "Отменен продавцом" (цифра 3)
                 sale.Status = SaleStatus.CancelledBySeller;
 
-                // 2. Фиксируем время отмены (опционально, но полезно)
                 sale.DateTime = DateTime.Now;
-
-                // Товары (SaleItems) удалять НЕ НАДО. 
-                // Пусть останутся в истории, чтобы мы знали, ЧТО именно хотели купить, но передумали.
 
                 await _context.SaveChangesAsync();
             }
 
-            // Редирект обновит вкладки, и этот чек пропадет из списка "Активных", 
-            // потому что там фильтр Where(Status == Draft)
             return RedirectToAction("Index");
         }
 
-        // Финализация (Оплата)
+        // Финализация (состояние "Ждёт оплаты", но процесс ожидания оплаты упрощён до моментальной продажи)
         [HttpPost]
         public async Task<IActionResult> FinalizeSale(int saleId)
         {
@@ -305,10 +296,10 @@ namespace PcStore.Web.Controllers
 
                 if (sale == null || !sale.SaleItems.Any()) return RedirectToAction("Index");
 
-                // Списываем остатки
+                // Списание остатков
                 foreach (var item in sale.SaleItems)
                 {
-                    // Загружаем "свежее" состояние товара прямо из базы
+                    // Загрузка "свежего" состояния товара из БД
                     var product = await _context.Products.FindAsync(item.ProductId);
 
                     if (product == null)
@@ -325,22 +316,21 @@ namespace PcStore.Web.Controllers
                         return RedirectToAction("Index");
                     }
 
-                    // Если всё ок - списываем
                     product.QuantityInStock -= item.Quantity;
                 }
 
-                // Фиксируем сумму
+                // Фиксация суммы
                 decimal subTotal = sale.SaleItems.Sum(x => x.PriceAtSale * x.Quantity);
                 sale.TotalAmount = subTotal - (subTotal * sale.DiscountPercent);
 
                 sale.Status = SaleStatus.Paid;
 
                 await _context.SaveChangesAsync();
-                await transaction.CommitAsync(); // Подтверждаем транзакцию
+                await transaction.CommitAsync();
             }
             catch (Exception)
             {
-                await transaction.RollbackAsync(); // Если что-то упало - отменяем всё
+                await transaction.RollbackAsync();
                 TempData["ErrorMessage"] = "Произошла ошибка при оформлении. Попробуйте снова.";
                 return RedirectToAction("Index");
             }
@@ -348,34 +338,8 @@ namespace PcStore.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        // --- ВСПОМОГАТЕЛЬНЫЕ ---
-
-        private void CalculateTotals(Sale sale)
-        {
-            decimal subTotal = sale.SaleItems.Sum(x => x.PriceAtSale * x.Quantity);
-            decimal discountAmt = subTotal * sale.DiscountPercent;
-
-            ViewBag.SubTotal = subTotal;
-            ViewBag.DiscountAmount = discountAmt;
-            ViewBag.DiscountPercent = (int)(sale.DiscountPercent * 100);
-            ViewBag.GrandTotal = subTotal - discountAmt;
-        }
-
-        private async Task<IActionResult> ReloadCartPartial(int saleId)
-        {
-            var sale = await _context.Sales
-                .Include(s => s.SaleItems)
-                .ThenInclude(si => si.Product)
-                .FirstOrDefaultAsync(s => s.Id == saleId);
-
-            if (sale != null) CalculateTotals(sale);
-
-            // ВАЖНО: Модель теперь - Sale, а не List<CartItem>!
-            return PartialView("_CartPartial", sale);
-        }
-
-        // ... History и Details остаются без изменений ...
-        [Authorize(Roles = "Менеджер")]
+        // История
+        [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
         [HttpGet]
         public async Task<IActionResult> History()
         {
@@ -387,7 +351,50 @@ namespace PcStore.Web.Controllers
             return View(sales);
         }
 
-        [Authorize(Roles = "Менеджер")]
+        // Поиск по истории
+        [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
+        [HttpGet]
+        public async Task<IActionResult> SearchHistory(string searchString, int? statusId)
+        {
+            var query = _context.Sales
+                .Include(s => s.User)
+                .Include(s => s.SaleItems)
+                .AsQueryable();
+
+            // Поиск (по номеру чека или имени продавца)
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(s =>
+                    s.Id.ToString().Contains(searchString) ||
+                    s.User.FullName.Contains(searchString)
+                );
+            }
+
+            // Фильтр по статусу
+            if (statusId.HasValue)
+            {
+                if (statusId == -1)
+                {
+                    // Если выбрано "Отмененные" - искать отменённые и продавцом, и системой
+                    query = query.Where(s => s.Status == SaleStatus.CancelledBySeller ||
+                                             s.Status == SaleStatus.CancelledBySystem);
+                }
+                else
+                {
+                    query = query.Where(s => (int)s.Status == statusId);
+                }
+            }
+
+            // Сортировка (новые сверху)
+            query = query.OrderByDescending(s => s.DateTime);
+
+            var sales = await query.ToListAsync();
+
+            return PartialView("_SalesTablePartial", sales);
+        }
+
+        // Детализация чека
+        [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
@@ -398,6 +405,33 @@ namespace PcStore.Web.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (sale == null) return NotFound();
             return View(sale);
+        }
+
+        // --- ВСПОМОГАТЕЛЬНЫЕ ---
+        
+        // Подсчёт суммы всех позиций (с ценой на момент добавления) и всей продажи с учётом скидки
+        private void CalculateTotals(Sale sale)
+        {
+            decimal subTotal = sale.SaleItems.Sum(x => x.PriceAtSale * x.Quantity);
+            decimal discountAmt = subTotal * sale.DiscountPercent;
+
+            ViewBag.SubTotal = subTotal;
+            ViewBag.DiscountAmount = discountAmt;
+            ViewBag.DiscountPercent = (int)(sale.DiscountPercent * 100);
+            ViewBag.GrandTotal = subTotal - discountAmt;
+        }
+
+        // Обновление представления корзины
+        private async Task<IActionResult> ReloadCartPartial(int saleId)
+        {
+            var sale = await _context.Sales
+                .Include(s => s.SaleItems)
+                .ThenInclude(si => si.Product)
+                .FirstOrDefaultAsync(s => s.Id == saleId);
+
+            if (sale != null) CalculateTotals(sale);
+
+            return PartialView("_CartPartial", sale);
         }
     }
 }

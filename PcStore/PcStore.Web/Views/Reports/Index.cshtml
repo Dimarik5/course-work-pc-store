@@ -1,80 +1,99 @@
-﻿@model PcStore.Web.Models.SaleReportViewModel
+﻿@model PcStore.Web.Models.SaleReport
 
 @{
-    ViewData["Title"] = "Отчет по продажам";
+    ViewData["Title"] = "Отчеты";
 }
 
-<h2>Отчет по продажам</h2>
+<div class="admin-container">
 
-<!-- Форма выбора периода -->
-<div class="card mb-4 mt-3">
-    <div class="card-body bg-light">
-        <form method="get" class="row g-3 align-items-end">
-            <div class="col-md-3">
-                <label asp-for="StartDate" class="form-label fw-bold"></label>
-                <input asp-for="StartDate" class="form-control" type="date" />
+    <!-- Заголовок -->
+    <div class="d-flex align-items-center mb-4">
+        <i class="bi bi-graph-up text-primary display-6 me-3"></i>
+        <h1 class="page-title m-0" style="font-family: 'MTSans-Extended'; letter-spacing: 2px;">ФИНАНСОВЫЙ ОТЧЕТ</h1>
+    </div>
+
+    <!-- Панель выбора даты и генерации PDF -->
+    <div class="toolbar mb-4">
+        <form id="reportForm" asp-action="ExportPdf" method="get" class="d-flex flex-wrap gap-3 align-items-end w-100">
+
+            <div style="flex: 1;">
+                <label class="small text-muted mb-1">С даты</label>
+                <!-- type="text" и класс datepicker -->
+                <input type="text" id="startDate" name="startDate" class="form-control bg-dark text-white border-secondary datepicker"
+                       value="@Model.StartDate.ToString("yyyy-MM-dd")" />
             </div>
-            <div class="col-md-3">
-                <label asp-for="EndDate" class="form-label fw-bold"></label>
-                <input asp-for="EndDate" class="form-control" type="date" />
+            <div style="flex: 1;">
+                <label class="small text-muted mb-1">По дату</label>
+                <!-- type="text" и класс datepicker -->
+                <input type="text" id="endDate" name="endDate" class="form-control bg-dark text-white border-secondary datepicker"
+                       value="@Model.EndDate.ToString("yyyy-MM-dd")" />
             </div>
-            <div class="col-md-3 d-flex gap-2">
-                <!-- Кнопка просмотра на экране -->
-                <button type="submit" asp-action="Index" class="btn btn-primary flex-grow-1">Показать</button>
-                <!-- Кнопка скачивания PDF -->
-                <button type="submit" asp-action="ExportPdf" class="btn btn-danger">
-                    📄 PDF
-                </button>
-            </div>
+
+            <!-- Кнопка PDF -->
+            <button type="submit" class="btn btn-outline-danger d-flex align-items-center gap-2" style="height: 38px;">
+                <i class="bi bi-file-earmark-pdf-fill"></i>
+                <span>ЭКСПОРТ В PDF</span>
+            </button>
+
         </form>
     </div>
-</div>
 
-<!-- Карточки с итогами -->
-<div class="row mb-4">
-    <div class="col-md-6">
-        <div class="card text-white bg-success mb-3">
-            <div class="card-header">Общая выручка</div>
-            <div class="card-body">
-                <h2 class="card-title">@Model.TotalRevenue.ToString("C")</h2>
+    <!-- Карточки итогов -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="p-4 rounded h-100 d-flex flex-column justify-content-between"
+                 style="background-color: #151518; border: 1px solid var(--border);">
+                <div class="text-muted small mb-1 text-uppercase">Выручка за период</div>
+                <div class="text-success fw-bold" style="font-family: 'MTSans-Display'; font-size: 2.5rem; line-height: 1;" id="totalRevenue">
+                    @Model.TotalRevenue.ToString("N2") ₽
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="p-4 rounded h-100 d-flex flex-column justify-content-between"
+                 style="background-color: #151518; border: 1px solid var(--border);">
+                <div class="text-muted small mb-1 text-uppercase">Количество продаж</div>
+                <div class="text-white fw-bold" style="font-family: 'MTSans-Display'; font-size: 2.5rem; line-height: 1;" id="salesCount">
+                    @Model.SalesCount
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="card text-white bg-info mb-3">
-            <div class="card-header">Количество продаж</div>
-            <div class="card-body">
-                <h2 class="card-title">@Model.SalesCount</h2>
-            </div>
-        </div>
+
+    <!-- Таблица -->
+    <div id="report-table-container" style="flex-grow: 1; min-height: 0; display: flex; flex-direction: column;">
+        <partial name="_ReportsTablePartial" model="Model.Sales" />
     </div>
+
 </div>
 
-<!-- Таблица -->
-<h4>Детализация:</h4>
-@if (Model.Sales.Any())
-{
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Дата</th>
-                <th>Продавец</th>
-                <th class="text-end">Сумма</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Sales)
-            {
-                <tr>
-                    <td>@item.DateTime.ToString("g")</td>
-                    <td>@item.User?.FullName</td>
-                    <td class="text-end">@item.TotalAmount.ToString("C")</td>
-                </tr>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Инициализация красивого календаря ---
+            flatpickr(".datepicker", {
+                "locale": "ru", // Русский язык
+                dateFormat: "Y-m-d", // Формат, который понимает C#
+                allowInput: true, // Можно вводить руками
+                disableMobile: "true" // На мобилках тоже наш календарь, а не нативный
+            });
+
+            const startDateInput = document.getElementById('startDate');
+            const endDateInput = document.getElementById('endDate');
+            const tableContainer = document.getElementById('report-table-container');
+
+            const totalRevenueEl = document.getElementById('totalRevenue');
+            const salesCountEl = document.getElementById('salesCount');
+
+            function loadReportData() {
+                const start = startDateInput.value;
+                const end = endDateInput.value;
+                
+                window.location.href = `@Url.Action("Index", "Reports")?startDate=${start}&endDate=${end}`;
             }
-        </tbody>
-    </table>
-}
-else
-{
-    <div class="alert alert-warning">За выбранный период продаж не найдено.</div>
+            
+            startDateInput.addEventListener('change', loadReportData);
+            endDateInput.addEventListener('change', loadReportData);
+        });
+    </script>
 }

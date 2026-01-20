@@ -31,6 +31,7 @@ namespace PcStore.Web.Controllers
             }
 
             var supplier = await _context.Suppliers
+                .Include(c => c.Products) // Загружаем товары для статистики
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (supplier == null)
             {
@@ -122,6 +123,7 @@ namespace PcStore.Web.Controllers
             }
 
             var supplier = await _context.Suppliers
+                .Include(c => c.Products)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (supplier == null)
             {
@@ -131,18 +133,28 @@ namespace PcStore.Web.Controllers
             return View(supplier);
         }
 
+        // Архивация
         // POST: Suppliers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var supplier = await _context.Suppliers.FindAsync(id);
-            if (supplier != null)
+            if (supplier == null) return NotFound();
+
+            // Есть ли от этого поставщика неархивированные товары
+            bool hasActiveProducts = await _context.Products.AnyAsync(p => p.SupplierId == id && !p.IsArchived);
+
+            if (hasActiveProducts)
             {
-                _context.Suppliers.Remove(supplier);
+                return RedirectToAction(nameof(Delete), new { id = id });
             }
 
+            supplier.IsArchived = true;
+
+            _context.Suppliers.Update(supplier);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
