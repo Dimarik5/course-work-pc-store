@@ -13,8 +13,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Account/AccessDenied"; // Страница отказа в доступе, если нет прав
     });
 
-builder.Services.AddSession(); // Сервис сессий
-
 // Указание лицензии для QuestPDF для генерации отчётов
 QuestPDF.Settings.License = LicenseType.Community;
 
@@ -42,8 +40,6 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
-app.UseSession();
 
 app.UseRouting();
 
