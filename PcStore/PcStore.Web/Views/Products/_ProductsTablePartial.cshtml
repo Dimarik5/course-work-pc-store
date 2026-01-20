@@ -52,9 +52,11 @@
                             </td>
                             <td class="text-end">
                                 <div class="d-inline-flex gap-1">
+                                    @if (User.IsInRole("Продавец"))
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="action-btn" title="Редактировать"><i class="bi bi-pencil-fill"></i></a>
+                                    }
 
-                                    <!-- Общедоступная группа -->
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="action-btn" title="Редактировать"><i class="bi bi-pencil-fill"></i></a>
                                     <a asp-action="Details" asp-route-id="@item.Id" class="action-btn" title="Подробнее"><i class="bi bi-eye-fill"></i></a>
 
                                     <!-- Группа для менеджера -->
@@ -71,7 +73,10 @@
                                         <a asp-action="WriteOff" asp-route-id="@item.Id" class="action-btn danger" style="color: var(--danger);" title="Списание товара">
                                             <i class="bi bi-dash-square"></i>
                                         </a>
-
+                                    }
+                                    
+                                    @if (User.IsInRole("Продавец"))
+                                    {
                                         <div style="width: 1px; background: var(--border); border-radius: 8px; margin: 0 5px;"></div>
 
                                         <!-- Архивация -->

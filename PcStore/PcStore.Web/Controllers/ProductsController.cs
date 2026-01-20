@@ -64,6 +64,7 @@ namespace PcStore.Web.Controllers
         }
 
         // GET: Products/Create
+        [Authorize(Roles = "Продавец")] // К методу имеет доступ только продавец
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories.Where(c => !c.IsArchived), "Id", "Name");
@@ -75,6 +76,7 @@ namespace PcStore.Web.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Продавец")] // К методу имеет доступ только продавец
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Sku,Description,Price,QuantityInStock,CategoryId,SupplierId")] Product product)
         {
@@ -90,6 +92,7 @@ namespace PcStore.Web.Controllers
         }
 
         // GET: Products/Edit/5
+        [Authorize(Roles = "Продавец")] // К методу имеет доступ только продавец
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -111,6 +114,7 @@ namespace PcStore.Web.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Продавец")] // К методу имеет доступ только продавец
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Sku,Description,Price,QuantityInStock,CategoryId,SupplierId")] Product product)
         {
@@ -145,7 +149,7 @@ namespace PcStore.Web.Controllers
         }
 
         // GET: Products/Delete/5
-        [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
+        [Authorize(Roles = "Продавец")] // К методу имеет доступ только продавец
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -168,7 +172,7 @@ namespace PcStore.Web.Controllers
         // Архивация
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
-        [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
+        [Authorize(Roles = "Продавец")] // К методу имеет доступ только продавец
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -188,6 +192,7 @@ namespace PcStore.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Продавец")] // К методу имеет доступ только продавец
         private bool ProductExists(int id)
         {
             return _context.Products.Any(e => e.Id == id);

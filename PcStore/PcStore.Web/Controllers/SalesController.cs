@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace PcStore.Web.Controllers
 {
-    [Authorize]
+    [Authorize] // К контроллеру имеют доступ только авторизованные пользователи
     public class SalesController : Controller
     {
         private readonly AppDbContext _context;
@@ -20,6 +20,7 @@ namespace PcStore.Web.Controllers
 
         // Главная страница
         [HttpGet]
+        [Authorize(Roles = "Продавец")] // К методу имеет доступ только продавец
         public async Task<IActionResult> Index(int? activeSaleId, string searchString, int? categoryId, int? supplierId, string sortOrder)
         {
             // ID текущего пользователя
@@ -101,6 +102,7 @@ namespace PcStore.Web.Controllers
 
         // Живой поиск AJAX с фильтрами
         [HttpGet]
+        [Authorize(Roles = "Продавец")] // К методу имеет доступ только продавец
         public async Task<IActionResult> SearchProducts(string searchString, int? categoryId, int? supplierId, string sortOrder)
         {
             var query = _context.Products
@@ -139,6 +141,7 @@ namespace PcStore.Web.Controllers
 
         // Создать новый пустой чек
         [HttpPost]
+        [Authorize(Roles = "Продавец")] // К методу имеет доступ только продавец
         public async Task<IActionResult> CreateNewSale()
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -158,8 +161,9 @@ namespace PcStore.Web.Controllers
             return RedirectToAction("Index", new { activeSaleId = sale.Id });
         }
 
-        // Добавить товар (сразу в БД)
+        // Добавить товар в чек
         [HttpPost]
+        [Authorize(Roles = "Продавец")] // К методу имеет доступ только продавец
         public async Task<IActionResult> AddItem(int productId, int quantity, int? saleId)
         {
             Sale sale;
@@ -215,6 +219,7 @@ namespace PcStore.Web.Controllers
             return await ReloadCartPartial(sale.Id);
         }
 
+        [Authorize(Roles = "Продавец")] // К методу имеет доступ только продавец
         private async Task<IActionResult> CreateNewSaleAndAdd(int productId, int quantity)
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -225,8 +230,9 @@ namespace PcStore.Web.Controllers
             return await AddItem(productId, quantity, sale.Id);
         }
 
-        // Удаление товара (из БД)
+        // Удаление товара из чека
         [HttpPost]
+        [Authorize(Roles = "Продавец")] // К методу имеет доступ только продавец
         public async Task<IActionResult> RemoveItem(int productId, int saleId)
         {
             var item = await _context.SaleItems
@@ -243,6 +249,7 @@ namespace PcStore.Web.Controllers
 
         // Применение скидки
         [HttpPost]
+        [Authorize(Roles = "Продавец")] // К методу имеет доступ только продавец
         public async Task<IActionResult> ApplyDiscount(string code, int saleId)
         {
             var sale = await _context.Sales.FindAsync(saleId);
@@ -265,6 +272,7 @@ namespace PcStore.Web.Controllers
 
         // Отмена продавцом
         [HttpPost]
+        [Authorize(Roles = "Продавец")] // К методу имеет доступ только продавец
         public async Task<IActionResult> CancelSale(int saleId)
         {
             var sale = await _context.Sales.FindAsync(saleId);
@@ -284,6 +292,7 @@ namespace PcStore.Web.Controllers
 
         // Финализация (состояние "Ждёт оплаты", но процесс ожидания оплаты упрощён до моментальной продажи)
         [HttpPost]
+        [Authorize(Roles = "Продавец")] // К методу имеет доступ только продавец
         public async Task<IActionResult> FinalizeSale(int saleId)
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
@@ -339,8 +348,8 @@ namespace PcStore.Web.Controllers
         }
 
         // История
-        [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
         [HttpGet]
+        [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
         public async Task<IActionResult> History()
         {
             var sales = await _context.Sales
@@ -352,8 +361,8 @@ namespace PcStore.Web.Controllers
         }
 
         // Поиск по истории
-        [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
         [HttpGet]
+        [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
         public async Task<IActionResult> SearchHistory(string searchString, int? statusId)
         {
             var query = _context.Sales
@@ -394,8 +403,8 @@ namespace PcStore.Web.Controllers
         }
 
         // Детализация чека
-        [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
         [HttpGet]
+        [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -408,8 +417,9 @@ namespace PcStore.Web.Controllers
         }
 
         // --- ВСПОМОГАТЕЛЬНЫЕ ---
-        
+
         // Подсчёт суммы всех позиций (с ценой на момент добавления) и всей продажи с учётом скидки
+        [Authorize(Roles = "Менеджер")] // К методу имеет доступ только менеджер
         private void CalculateTotals(Sale sale)
         {
             decimal subTotal = sale.SaleItems.Sum(x => x.PriceAtSale * x.Quantity);
@@ -422,6 +432,7 @@ namespace PcStore.Web.Controllers
         }
 
         // Обновление представления корзины
+        [Authorize(Roles = "Продавец")] // К методу имеет доступ только продавец
         private async Task<IActionResult> ReloadCartPartial(int saleId)
         {
             var sale = await _context.Sales

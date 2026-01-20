@@ -45,12 +45,14 @@
                 <option value="qty_desc">С большим остатком</option>
             </select>
         </div>
-
-        <!-- Кнопка создания -->
-        <a asp-action="Create" class="btn btn-primary d-flex align-items-center px-4" style="height: 45px; border-radius: 100px;">
-            <i class="bi bi-plus-lg me-2"></i>
-            <span style="font-family: 'MTSans-Display'; white-space: nowrap">НОВЫЙ ТОВАР</span>
-        </a>
+        @if (User.IsInRole("Продавец"))
+        {
+            <!-- Кнопка создания -->
+            <a asp-action="Create" class="btn btn-primary d-flex align-items-center px-4" style="height: 45px; border-radius: 100px;">
+                <i class="bi bi-plus-lg me-2"></i>
+                <span style="font-family: 'MTSans-Display'; white-space: nowrap">НОВЫЙ ТОВАР</span>
+            </a>
+        }
     </div>
 
     <!-- Контейнер для таблицы -->

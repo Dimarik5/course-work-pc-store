@@ -6,7 +6,7 @@ using PcStore.Web.Models;
 
 namespace PcStore.Web.Controllers
 {
-    [Authorize] // К контроллеру имеют доступ только авторизованные пользователи
+    [Authorize(Roles = "Продавец")] // К контроллеру имеет доступ только продавец
     public class SuppliersController : Controller
     {
         private readonly AppDbContext _context;

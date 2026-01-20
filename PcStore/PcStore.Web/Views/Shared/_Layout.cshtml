@@ -47,17 +47,20 @@
                 <i class="bi bi-box-seam"></i>
             </a>
 
-            <a asp-controller="Categories" asp-action="Index" class="sidebar-icon @GetActive("Categories")" title="Категории">
-                <i class="bi bi-tags"></i>
-            </a>
+            @if (User.IsInRole("Продавец"))
+            {
+                <a asp-controller="Categories" asp-action="Index" class="sidebar-icon @GetActive("Categories")" title="Категории">
+                    <i class="bi bi-tags"></i>
+                </a>
 
-            <a asp-controller="Suppliers" asp-action="Index" class="sidebar-icon @GetActive("Suppliers")" title="Поставщики">
-                <i class="bi bi-truck"></i>
-            </a>
+                <a asp-controller="Suppliers" asp-action="Index" class="sidebar-icon @GetActive("Suppliers")" title="Поставщики">
+                    <i class="bi bi-truck"></i>
+                </a>
 
-            <a asp-controller="Sales" asp-action="Index" class="sidebar-icon @GetActive("Sales", "Index")" title="Терминал">
-                <i class="bi bi-cart4"></i>
-            </a>
+                <a asp-controller="Sales" asp-action="Index" class="sidebar-icon @GetActive("Sales", "Index")" title="Терминал">
+                    <i class="bi bi-cart4"></i>
+                </a>
+            }
 
             @if (User.IsInRole("Менеджер"))
             {
