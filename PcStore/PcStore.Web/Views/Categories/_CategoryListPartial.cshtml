@@ -24,11 +24,7 @@
                     <div class="dict-actions">
                         <a asp-action="Edit" asp-route-id="@category.Id" class="action-btn" title="Редактировать"><i class="bi bi-pencil-fill"></i></a>
                         <a asp-action="Details" asp-route-id="@category.Id" class="action-btn" title="Подробнее"><i class="bi bi-eye-fill"></i></a>
-
-                        @if (User.IsInRole("Менеджер"))
-                        {
-                            <a asp-action="Delete" asp-route-id="@category.Id" class="action-btn danger" title="В архив"><i class="bi bi-archive-fill"></i></a>
-                        }
+                        <a asp-action="Delete" asp-route-id="@category.Id" class="action-btn danger" title="В архив"><i class="bi bi-archive-fill"></i></a>
                     </div>
                 </div>
             }
